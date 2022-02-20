@@ -13,9 +13,12 @@ NPM packages will be installed
 - neovim
 - tree-sitter-cli
 
-Python3 virtual environment will be configured at to install the 'neovim' package
+Python3 virtual environment will be configured at
+
+(to install the 'neovim' package)
 
     /usr/local/share/nvim/python3
+
 
 TODO: Add setup for the other providers listed under
 
