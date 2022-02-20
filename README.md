@@ -24,11 +24,13 @@ TODO: Add setup for the other providers listed under
 
     :checkhealth provider
 
-[Vim-Plug](https://github.com/junegunn/vim-plug) will be installed at
+Installs [Vim-Plug](https://github.com/junegunn/vim-plug) to
 
     ~/.config/nvim/autoload/plug.vim
 
-Installs [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip) to ~/.local/share/fonts
+Installs [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip) to
+
+    ~/.local/share/fonts
 
 ### Arch
 
