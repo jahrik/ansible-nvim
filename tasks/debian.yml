@@ -14,9 +14,12 @@
     state: present
   with_items:
     - python3-pynvim
+    - python3-virtualenv
     - curl
     - git
     - dirmngr
+    - nodejs
+    - npm
   tags:
     - nvim
 
