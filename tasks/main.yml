@@ -1,0 +1,6 @@
+---
+- include_tasks: install.yml
+  when: install | default('true') == true
+
+- include_tasks: uninstall.yml
+  when: install | default('true') == false

@@ -1,0 +1,71 @@
+---
+- include_tasks: archlinux.yml
+  when: ansible_os_family == 'Archlinux'
+
+- include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install neovim
+  become: true
+  package:
+    name:
+      - neovim
+    state: present
+  tags:
+    - nvim
+
+- name: create ~/.vim/autoload directory
+  become: false
+  file:
+    path: "~/.vim/autoload/"
+    state: directory
+    mode: 0755
+  tags:
+    - nvim
+ 
+- name: Install vim-plug
+  become: false
+  command: |
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+- name: create ~/.config/nvim directory
+  become: false
+  file:
+    path: "~/.config/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "nvim"
+    - "nvim/init.d"
+    - "nvim/lua.d"
+  tags:
+    - nvim
+ 
+- name: generate nvim config files
+  become: false
+  template:
+    src: "{{ item }}.j2"
+    dest: "~/.config/nvim/{{ item }}"
+  with_items:
+    - init.vim
+    - coc-settings.json
+    - init.d/00.Init.vim
+    - init.d/01.Keys.vim
+    - init.d/02.Plug.vim
+    - init.d/30.Coc.vim
+    - init.d/31.BarBar.vim
+    - init.d/31.BetterWhitespace.vim
+    - init.d/31.FzfPreview.vim
+    - init.d/31.GitMessenger.vim
+    - init.d/31.LuaTree.vim
+    - init.d/31.Startify.vim
+    - init.d/31.TreeSitter.vim
+    - init.d/31.VimTest.vim
+    - init.d/90.FileTypes.vim
+    - init.d/99.Theme.vim
+    - lua.d/50.GalaxyLine.lua
+    - lua.d/50.NvimTree.lua
+  notify: "nvim plugin install"
+  tags:
+    - nvim

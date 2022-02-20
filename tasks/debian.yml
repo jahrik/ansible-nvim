@@ -1,0 +1,18 @@
+---
+- name: Update Repository cache when Ubuntu
+  become: true
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+  tags:
+    - nvim
+
+- name: Install requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3-pynvim
+    - curl
+  tags:
+    - nvim

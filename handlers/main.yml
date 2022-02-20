@@ -1,0 +1,3 @@
+---
+- name: nvim plugin install
+  command: nvim --headless +PlugInstall +qall
