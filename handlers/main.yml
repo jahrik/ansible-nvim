@@ -1,3 +1,6 @@
 ---
 - name: nvim plugin install
   command: nvim --headless +PlugInstall +qall
+
+- name: fc-cache
+  command: fc-cache -f ~/.local/share/fonts/

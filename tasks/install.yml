@@ -79,3 +79,23 @@
   notify: "nvim plugin install"
   tags:
     - nvim
+
+- name: Create ~/.local/share/fonts directory
+  become: false
+  file:
+    path: ~/.local/share/fonts
+    state: directory
+    recurse: true
+  tags:
+    - nvim
+
+- name: Download Nerd Fonts (dejavu-sands-mono-nerfonts)
+  become: false
+  ansible.builtin.unarchive:
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip
+    dest: ~/.local/share/fonts
+    remote_src: yes
+    creates: '~/.local/share/fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf'
+  notify: fc-cache
+  tags:
+    - nvim

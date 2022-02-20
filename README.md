@@ -28,14 +28,18 @@ TODO: Add setup for the other providers listed under
 
     ~/.config/nvim/autoload/plug.vim
 
+Installs [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip) to ~/.local/share/fonts
+
 ### Arch
 
 The following pacman packages will be installed
 
-- python-virtualenv
-- python-pynvim
+- fontconfig
 - nodejs
 - npm
+- python-pynvim
+- python-virtualenv
+- unzip
 
 ### Ubuntu
 
@@ -43,11 +47,13 @@ The following apt packages will be installed
 
 - curl
 - dirmngr
+- fontconfig
 - git
 - nodejs
 - npm
 - python3-pynvim
 - python3-virtualenv
+- unzip
 
 The latest version of neovim will install from [ppa:neovim-ppa/stable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/stable)
 

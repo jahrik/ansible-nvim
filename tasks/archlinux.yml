@@ -5,9 +5,11 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - python-virtualenv
-    - python-pynvim
+    - fontconfig
     - nodejs
     - npm
+    - python-pynvim
+    - python-virtualenv
+    - unzip
   tags:
     - nvim
