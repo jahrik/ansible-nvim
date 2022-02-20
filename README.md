@@ -1,12 +1,11 @@
-## Vim
+## NEOVIM
 
 [![CICD](https://github.com/jahrik/ansible-nvim/actions/workflows/cicd.yml/badge.svg)](https://github.com/jahrik/ansible-nvim/actions/workflows/cicd.yml)
 
-Install nvim, plug-vim, plugins, and configure
+Install neovim, plug-vim, plugins, and configure
 
 ## Requirements
 
-None
 
 ## Role Variables
 
@@ -14,7 +13,7 @@ None
 
 ## Dependencies
 
-none
+None
 
 ## Example Playbook
 

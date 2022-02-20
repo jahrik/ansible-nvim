@@ -1,5 +1,5 @@
 ---
-- name: Update Repository cache when Ubuntu
+- name: Update Repository cache
   become: true
   apt:
     update_cache: true
@@ -15,5 +15,12 @@
   with_items:
     - python3-pynvim
     - curl
+    - git
+    - dirmngr
   tags:
     - nvim
+
+- name: Add neovim-ppa
+  apt_repository:
+    repo: 'ppa:neovim-ppa/stable'
+    update_cache: true

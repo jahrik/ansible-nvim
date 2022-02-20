@@ -10,7 +10,7 @@
   package:
     name:
       - neovim
-    state: present
+    state: latest
   tags:
     - nvim
 
