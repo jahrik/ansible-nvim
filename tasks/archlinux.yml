@@ -1,5 +1,6 @@
 ---
 - name: Install requirements
+  become: true
   package:
     name: "{{ item }}"
     state: present

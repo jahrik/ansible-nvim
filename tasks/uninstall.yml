@@ -1,37 +1,17 @@
 ---
-- name: Uninstall nvim
+- name: Uninstall neovim
   become: true
   package:
     name:
-      - nvim
+      - neovim
     state: absent
   tags:
-    - vim
+    - nvim
 
-- name: rsync ~/.config/vim to /tmp/.config/vim
-  become: false
-  synchronize:
-    src: ~/.config/vim/
-    dest: /tmp/vim
-
-- name: Remove ~/.config/vim directory
+- name: Destroy ~/.config/nvim directory
   become: false
   file:
-    path: "~/.config/vim/"
+    path: ~/.config/nvim
     state: absent
   tags:
-    - vim
-
-- name: rsync ~/.vimrc to /tmp/.config/vim/.vimrc
-  become: false
-  synchronize:
-    src: ~/.vimrc
-    dest: /tmp/vim/.vimrc
-
-- name: Remove ~/.vimrc
-  become: false
-  file:
-    path: "~/.vimrc"
-    state: absent
-  tags:
-    - vim
+    - nvim
