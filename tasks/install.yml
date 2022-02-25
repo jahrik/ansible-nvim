@@ -1,15 +1,10 @@
 ---
-- include_tasks: archlinux.yml
-  when: ansible_os_family == 'Archlinux'
-
-- include_tasks: debian.yml
-  when: ansible_os_family == 'Debian'
+- include_tasks: "{{ ansible_os_family }}.yml"
 
 - name: Install neovim
   become: true
   package:
-    name:
-      - neovim
+    name: neovim
     state: latest
   tags:
     - nvim
@@ -17,11 +12,9 @@
 - name: Install NPM packages
   become: true
   community.general.npm:
-    name: "{{ item }}"
-    path: /app/location
-  with_items:
-    - neovim
-    - tree-sitter-cli
+    name: neovim
+    global: yes
+    state: present
 
 - name: Create python virtual env and install neovim module
   become: true
@@ -38,10 +31,10 @@
     mode: 0755
   with_items:
     - "nvim"
+    - "nvim/autoload"
     - "nvim/init.d"
     - "nvim/lua.d"
     - "nvim/snips"
-    - "nvim/autoload"
   tags:
     - nvim
 
@@ -89,7 +82,7 @@
   tags:
     - nvim
 
-- name: Download Nerd Fonts (dejavu-sands-mono-nerfonts)
+- name: Download Nerd Fonts (dejavu-sans-mono-nerfonts)
   become: false
   ansible.builtin.unarchive:
     src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip

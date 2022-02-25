@@ -1,82 +1,56 @@
 ---
 install: true
-vundle:
-  - "The-NERD-tree"
-  - "vim-flake8"
-  - "surround.vim"
-  - "vadv/vim-chef"
-  - "vim-syntastic/syntastic"
-  - "plasticboy/vim-markdown"
-  - "mzlogin/vim-markdown-toc"
-  - "ekalinin/Dockerfile.vim"
-  - "https://github.com/hashivim/vim-terraform.git"
-  - "https://github.com/wtfbbqhax/Snort-vim.git"
-  - "https://github.com/pearofducks/ansible-vim.git"
-  - "https://github.com/powerline/powerline.git"
-  - "https://github.com/ngmy/vim-rubocop.git"
-set:
-  - laststatus=2
-  - showtabline=2
-  - noshowmode
-  - foldmethod=indent
-  - foldlevel=99
-  - background=dark
-  - completeopt=menuone,longest,preview
-  - colorcolumn=101
-  - cursorcolumn
-  - cursorline
-  - expandtab
-  - tabstop=2
-  - shiftwidth=2
-  - spell
-  - spelllang=en
-  - spellfile=$HOME/.config/vim/en.utf-8.add
-  - number
-  # syntastic
-  - statusline+=%#warningmsg#
-  - statusline+=%{SyntasticStatuslineFlag()}
-  - statusline+=%*
+nvim:
+  plugins:
+    coc_nvim:
+      plug: neoclide/coc.nvim
+      args: "{'branch': 'release'}"
+      info: "https://github.com/neoclide/coc.nvim"
+    coc_jedi:
+      plug: pappasam/coc-jedi
+      args: "{'branch': 'main', 'do': 'yarn install --frozen-lockfile && yarn build'}"
+      info: https://github.com/pappasam/coc-jedi
+    vim_jsonc:
+      plug: kevinoid/vim-jsonc
+      info: https://github.com/kevinoid/vim-jsonc
+    fzf_preview_vim:
+      plug: junegunn/fzf
+      args: "{ 'do': { -> fzf#install() } }"
+      info: https://github.com/yuki-yano/fzf-preview.vim#installation
 
-map:
-  - <c-j> <c-w>j
-  - <c-k> <c-w>k
-  - <c-l> <c-w>l
-  - <c-h> <c-w>h
-  - <leader>td <Plug>TaskLisk
-  - "<leader>g :GundoToggle<CR>"
-  - "<F2> :NERDTreeToggle<CR>"
-  - "<F3> :setlocal spell! spelllang=en_us<CR>"
+#     " https://github.com/nvim-treesitter/nvim-treesitter
+#     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+#
+#     " https://github.com/glepnir/galaxyline.nvim
+#     Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+#
+#     " https://github.com/kyazdani42/nvim-tree.lua
+#     Plug 'kyazdani42/nvim-web-devicons'
+#     Plug 'kyazdani42/nvim-tree.lua'
+#
+#     " https://github.com/romgrk/barbar.nvim
+#     Plug 'romgrk/barbar.nvim'
+#
+#     " https://github.com/liuchengxu/vim-which-key
+#     Plug 'liuchengxu/vim-which-key'
+#
+#     " https://github.com/ntpeters/vim-better-whitespace
+#     Plug 'ntpeters/vim-better-whitespace'
+#
+#     " https://github.com/mhinz/vim-startify
+#     Plug 'mhinz/vim-startify'
+#
+#     " https://github.com/airblade/vim-gitgutter
+#     Plug 'airblade/vim-gitgutter'
+#
+#     " https://github.com/rhysd/git-messenger.vim
+#     Plug 'rhysd/git-messenger.vim'
+#
+#     Plug 'srcery-colors/srcery-vim'
+#
+#     " https://github.com/vim-test/vim-test
+#     Plug 'vim-test/vim-test'
 
-nmap:
-  - "<F4> :SyntasticToggleMode<CR>"
-  - "<f5> :set number! number?<cr>"
-
-syntax:
-  - "on"
-
-colorscheme:
-  - slate
-
-filetype:
-  - "on"
-  - plugin indent on
-
-let:
-  - g:pyflakes_use_quickfix = 0
-  - g:NERDTreeDirArrows=0
-  - g:syntastic_always_populate_loc_list = 1
-  - g:syntastic_auto_loc_list = 1
-  - g:syntastic_check_on_open = 1
-  - g:syntastic_check_on_wq = 0
-  - g:syntastic_ruby_checkers = ['rubocop']
-  - g:syntastic_python_checkers = ['pylint', 'flake8']
-  - g:syntastic_ansible_checkers = ['ansible_lint']
-  - g:syntastic_chef_checkers = ['cookstyle']
-  - g:ansible_ftdetect_filename_regex = '\v(playbook|site|main|local|requirements)\.ya?ml$'
-  # - g:syntastic_ignore_files = ['\m^roles/']
-
-command:
-  - Fuckyou w !sudo tee %
-
-autocmd:
-  - FileType ruby,eruby set filetype=ruby.eruby.chef
+  set:
+    - tabstop=2
+    - shiftwidth=2

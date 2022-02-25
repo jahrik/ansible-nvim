@@ -1,10 +1,35 @@
 ---
-# This is an example playbook to execute Ansible tests.
-
 - name: Verify
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
+
+  - name: Gather package facts
+    ansible.builtin.package_facts:
+      manager: auto
+
+  - name: Assert neovim package installed
     assert:
-      that: true
+      that: "'neovim' in ansible_facts.packages"
+
+  - name: Stat ~/.config/nvim/init.vim file
+    stat:
+      path: ~/.config/nvim/init.vim
+    register: init_vim
+
+  - name: Assert ~/.config/nvim/init.vim exists
+    become: false
+    assert:
+      that: init_vim.stat.exists
+
+  - name: Check NPM packages
+    become: true
+    community.general.npm:
+      name: neovim
+      global: yes
+    check_mode: true
+    register: npm_packages
+
+  - name: Assert NPM packages installed
+    assert:
+      that: not npm_packages.changed
