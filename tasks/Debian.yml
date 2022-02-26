@@ -1,24 +1,16 @@
 ---
-- name: Update Repository cache
-  become: true
-  apt:
-    update_cache: true
-    cache_valid_time: 3600
-  tags:
-    - nvim
-
 - name: Install requirements
   become: true
   package:
     name: "{{ item }}"
     state: present
+    update_cache: true
+    cache_valid_time: 3600
   with_items:
     - curl
     - dirmngr
     - fontconfig
     - git
-    - nodejs
-    - npm
     - python3-pynvim
     - python3-virtualenv
     - unzip
@@ -29,3 +21,27 @@
   apt_repository:
     repo: 'ppa:neovim-ppa/stable'
     update_cache: true
+  tags:
+    - nvim
+
+- name: Install the gpg key for nodejs LTS
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+  tags:
+    - nvim
+
+- name: Install the nodejs LTS repos
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_17.x {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+  tags:
+    - nvim
+
+- name: Install nodejs
+  apt:
+    name: nodejs
+    state: present
+  tags:
+    - nvim
