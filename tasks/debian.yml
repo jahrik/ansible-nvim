@@ -31,7 +31,7 @@
   tags:
     - nvim
 
-- name: Install the nodejs LTS repos
+- name: Install the nodejs 17 LTS repos
   apt_repository:
     repo: "deb https://deb.nodesource.com/node_17.x {{ ansible_distribution_release }} main"
     state: present
@@ -45,3 +45,18 @@
     state: present
   tags:
     - nvim
+
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+# Ubuntu 20.04 comes with an old version of neovim
+- name: Uninstall old versions of neovim if < 0.6
+  apt:
+    name: neovim
+    state: absent
+  when:
+    - "'neovim' in ansible_facts.packages"
+    - "ansible_facts.packages.neovim[0].version[:3] | float < 0.6"
+  tags:
+      - nvim

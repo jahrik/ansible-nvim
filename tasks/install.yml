@@ -5,7 +5,7 @@
   become: true
   package:
     name: neovim
-    state: latest
+    state: present
   tags:
     - nvim
 

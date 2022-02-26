@@ -2,7 +2,7 @@
 
 [![CICD](https://github.com/jahrik/ansible-nvim/actions/workflows/cicd.yml/badge.svg)](https://github.com/jahrik/ansible-nvim/actions/workflows/cicd.yml)
 
-Install neovim, plug-vim, plugins, and configurations
+Install neovim, plug-vim, coc, plugins, and configurations
 
 Configurations are based on [en0's dotfiles](https://github.com/en0/dotfiles)
 
@@ -11,14 +11,10 @@ Configurations are based on [en0's dotfiles](https://github.com/en0/dotfiles)
 NPM packages will be installed
 
 - neovim
-- tree-sitter-cli
 
-Python3 virtual environment will be configured at
-
-(to install the 'neovim' package)
+Sets up a Python3 virtual environment and installs neovim module to it at
 
     /usr/local/share/nvim/python3
-
 
 TODO: Add setup for the other providers listed under
 
