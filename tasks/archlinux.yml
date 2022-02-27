@@ -9,6 +9,7 @@
     - nodejs
     - npm
     - python-pynvim
+    - python-setuptools
     - python-virtualenv
     - unzip
   tags:

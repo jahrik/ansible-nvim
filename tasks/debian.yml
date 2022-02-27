@@ -12,6 +12,7 @@
     - fontconfig
     - git
     - python3-pynvim
+    - python3-setuptools
     - python3-virtualenv
     - unzip
   tags:
