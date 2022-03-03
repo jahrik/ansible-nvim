@@ -1,55 +1,68 @@
 ---
 install: true
+
 nvim:
   plugins:
-    coc_nvim:
-      plug: neoclide/coc.nvim
-      args: "{'branch': 'release'}"
-      info: "https://github.com/neoclide/coc.nvim"
-    coc_jedi:
-      plug: pappasam/coc-jedi
-      args: "{'branch': 'main', 'do': 'yarn install --frozen-lockfile && yarn build'}"
-      info: https://github.com/pappasam/coc-jedi
-    vim_jsonc:
-      plug: kevinoid/vim-jsonc
-      info: https://github.com/kevinoid/vim-jsonc
-    fzf_preview_vim:
-      plug: junegunn/fzf
-      args: "{ 'do': { -> fzf#install() } }"
-      info: https://github.com/yuki-yano/fzf-preview.vim#installation
 
-#     " https://github.com/nvim-treesitter/nvim-treesitter
-#     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-#
-#     " https://github.com/glepnir/galaxyline.nvim
-#     Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
-#
-#     " https://github.com/kyazdani42/nvim-tree.lua
-#     Plug 'kyazdani42/nvim-web-devicons'
-#     Plug 'kyazdani42/nvim-tree.lua'
-#
-#     " https://github.com/romgrk/barbar.nvim
-#     Plug 'romgrk/barbar.nvim'
-#
-#     " https://github.com/liuchengxu/vim-which-key
-#     Plug 'liuchengxu/vim-which-key'
-#
-#     " https://github.com/ntpeters/vim-better-whitespace
-#     Plug 'ntpeters/vim-better-whitespace'
-#
-#     " https://github.com/mhinz/vim-startify
-#     Plug 'mhinz/vim-startify'
-#
-#     " https://github.com/airblade/vim-gitgutter
-#     Plug 'airblade/vim-gitgutter'
-#
-#     " https://github.com/rhysd/git-messenger.vim
-#     Plug 'rhysd/git-messenger.vim'
-#
-#     Plug 'srcery-colors/srcery-vim'
-#
-#     " https://github.com/vim-test/vim-test
-#     Plug 'vim-test/vim-test'
+    - plug: neoclide/coc.nvim
+      info: https://github.com/neoclide/coc.nvim
+      args: "{ 'branch': 'release' }"
+
+    - plug: pappasam/coc-jedi
+      info: https://github.com/pappasam/coc-jedi
+      args: "{'branch': 'main', 'do': 'yarn install --frozen-lockfile && yarn build'}"
+
+    - plug: kevinoid/vim-jsonc
+      info: https://github.com/kevinoid/vim-jsonc
+
+    - plug: junegunn/fzf
+      info: https://github.com/yuki-yano/fzf-preview.vim#installation
+      args: "{ 'do': { -> fzf#install() } }"
+
+    - plug: nvim-treesitter/nvim-treesitter
+      info: https://github.com/nvim-treesitter/nvim-treesitter
+      args: "{'do': ':TSUpdate'}"
+
+    - plug: glepnir/galaxyline.nvim
+      args: "{'branch': 'main'}"
+      info: https://github.com/glepnir/galaxyline.nvim
+
+    - plug: kyazdani42/nvim-web-devicons
+      info: https://github.com/kyazdani42/nvim-web-devicons
+
+    - plug: kyazdani42/nvim-tree.lua
+      info: https://github.com/kyazdani42/nvim-tree.lua
+
+    - plug: romgrk/barbar.nvim
+      info: https://github.com/romgrk/barbar.nvim
+
+    - plug: liuchengxu/vim-which-key
+      info: https://github.com/liuchengxu/vim-which-key
+
+    - plug: ntpeters/vim-better-whitespace
+      info: https://github.com/ntpeters/vim-better-whitespace
+
+    - plug: mhinz/vim-startify
+      info: https://github.com/mhinz/vim-startify
+
+    - plug: airblade/vim-gitgutter
+      info: https://github.com/airblade/vim-gitgutter
+
+    - plug: rhysd/git-messenger.vim
+      info: https://github.com/rhysd/git-messenger.vim
+
+    - plug: srcery-colors/srcery-vim
+      info: https://github.com/srcery-colors/srcery-vim
+
+    - plug: vim-test/vim-test
+      info: https://github.com/vim-test/vim-test
+
+    # - plug: pearofducks/ansible-vim
+    #   info: https://github.com/pearofducks/ansible-vim
+
+    # - plug: yaegassy/coc-ansible
+    #   info: https://github.com/yaegassy/coc-ansible
+    #   args: "{'do': 'yarn install --frozen-lockfile'}"
 
   set:
     - tabstop=2
