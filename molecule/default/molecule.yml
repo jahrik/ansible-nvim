@@ -11,8 +11,6 @@ platforms:
     image: jahrik/docker-archlinux-ansible
     pre_build_image: true
     pull: true
-  # - name: mac
-  #   image: sickcodes/docker-osx
 provisioner:
   name: ansible
   inventory:
