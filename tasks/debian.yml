@@ -25,10 +25,10 @@
     - "ansible_distribution_major_version | int >= 18"
     - "ansible_distribution_major_version | int < 20"
 
-- name: Install python3-nvim if Ubuntu 20
+- name: Install python3-pynvim if Ubuntu 20
   become: true
   package:
-    name: python3-nvim
+    name: python3-pynvim
   when:
     - "ansible_distribution_major_version | int >= 20"
     - "ansible_distribution_major_version | int < 22"
