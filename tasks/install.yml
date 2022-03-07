@@ -16,6 +16,13 @@
     global: yes
     state: present
 
+- name: Ensure /usr/local/share/nvim/ directory exists
+  become: true
+  file:
+    mode: 0755
+    path: /usr/local/share/nvim/
+    state: directory
+
 - name: Create python virtual env and install neovim module
   become: true
   pip:

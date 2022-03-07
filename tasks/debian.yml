@@ -11,14 +11,30 @@
     - dirmngr
     - fontconfig
     - git
-    - python3-pynvim
     - python3-setuptools
     - python3-virtualenv
     - unzip
   tags:
     - nvim
 
+- name: Install python3-neovim if Ubuntu 18
+  become: true
+  package:
+    name: python3-neovim
+  when:
+    - "ansible_distribution_major_version | int >= 18"
+    - "ansible_distribution_major_version | int < 20"
+
+- name: Install python3-nvim if Ubuntu 20
+  become: true
+  package:
+    name: python3-nvim
+  when:
+    - "ansible_distribution_major_version | int >= 20"
+    - "ansible_distribution_major_version | int < 22"
+
 - name: Add neovim-ppa
+  become: true
   apt_repository:
     repo: 'ppa:neovim-ppa/stable'
     update_cache: true
@@ -26,6 +42,7 @@
     - nvim
 
 - name: Install the gpg key for nodejs LTS
+  become: true
   apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
     state: present
@@ -33,6 +50,7 @@
     - nvim
 
 - name: Install the nodejs 17 LTS repos
+  become: true
   apt_repository:
     repo: "deb https://deb.nodesource.com/node_17.x {{ ansible_distribution_release }} main"
     state: present
@@ -41,6 +59,7 @@
     - nvim
 
 - name: Install nodejs
+  become: true
   apt:
     name: nodejs
     state: present
@@ -48,11 +67,13 @@
     - nvim
 
 - name: Gather package facts
+  become: true
   ansible.builtin.package_facts:
     manager: auto
 
 # Ubuntu 20.04 comes with an old version of neovim
 - name: Uninstall old versions of neovim if < 0.6
+  become: true
   apt:
     name: neovim
     state: absent
