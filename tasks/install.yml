@@ -1,5 +1,33 @@
 ---
+##############
+# Requirements
+##############
+
 - include_tasks: "{{ ansible_os_family | lower }}.yml"
+
+- name: Create ~/.local/share/fonts directory
+  become: false
+  file:
+    path: ~/.local/share/fonts
+    state: directory
+    recurse: true
+  tags:
+    - nvim
+
+- name: Download Nerd Fonts (dejavu-sans-mono-nerfonts)
+  become: false
+  ansible.builtin.unarchive:
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip
+    dest: ~/.local/share/fonts
+    remote_src: yes
+    creates: '~/.local/share/fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf'
+  notify: fc-cache
+  tags:
+    - nvim
+
+########
+# Neovim
+########
 
 - name: Install neovim
   become: true
@@ -36,67 +64,57 @@
     path: "~/.config/{{ item }}"
     state: directory
     mode: 0755
+    recurse: true
   with_items:
     - "nvim"
-    - "nvim/autoload"
-    - "nvim/init.d"
-    - "nvim/lua.d"
-    - "nvim/snips"
+    - "nvim/lua"
+    - "nvim/after/plugin"
+    # - "nvim/autoload"
+    # - "nvim/init.d"
+    # - "nvim/snips"
   tags:
     - nvim
 
-- name: Install vim-plug
-  become: false
-  get_url:
-    url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    dest: ~/.config/nvim/autoload/plug.vim
+########
+# Packer
+########
+
+# Installed from AUR with yay instead.
+# nvim-packer-git
+
+# - name: create packer directories
+#   become: false
+#   file:
+#     path: "~/.local/share/nvim/site/pack/packer/start/"
+#     state: directory
+#     mode: 0755
+#     recurse: true
+#   tags:
+#     - nvim
+# 
+# - name: Install packer
+#   become: false
+#   get_url:
+#     url: https://github.com/wbthomason/packer.nvim
+#     dest: ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+
+#########
+# Configs
+#########
 
 - name: generate nvim config files
   become: false
   template:
     src: "{{ item }}.j2"
     dest: "~/.config/nvim/{{ item }}"
-    mode: 0644
   with_items:
-    - init.vim
-    - coc-settings.json
-    - init.d/00.Init.vim
-    - init.d/01.Keys.vim
-    - init.d/02.Plug.vim
-    - init.d/30.Coc.vim
-    - init.d/31.BarBar.vim
-    - init.d/31.BetterWhitespace.vim
-    - init.d/31.FzfPreview.vim
-    - init.d/31.GitMessenger.vim
-    - init.d/31.LuaTree.vim
-    - init.d/31.Startify.vim
-    - init.d/31.TreeSitter.vim
-    - init.d/31.VimTest.vim
-    - init.d/90.FileTypes.vim
-    - init.d/99.Theme.vim
-    - lua.d/50.GalaxyLine.lua
-    - lua.d/50.NvimTree.lua
-    - snips/startify.snippets
-  notify: "nvim plugin install"
-  tags:
-    - nvim
-
-- name: Create ~/.local/share/fonts directory
-  become: false
-  file:
-    path: ~/.local/share/fonts
-    state: directory
-    recurse: true
-  tags:
-    - nvim
-
-- name: Download Nerd Fonts (dejavu-sans-mono-nerfonts)
-  become: false
-  ansible.builtin.unarchive:
-    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip
-    dest: ~/.local/share/fonts
-    remote_src: yes
-    creates: '~/.local/share/fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf'
-  notify: fc-cache
+    - init.lua
+    - lua/remap.lua
+    - lua/plugins.lua
+    - after/plugin/telescope.lua
+    - after/plugin/colors.lua
+    - after/plugin/treesitter.lua
+    - after/plugin/lsp.lua
+  notify: "nvim packersync"
   tags:
     - nvim

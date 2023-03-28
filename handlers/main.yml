@@ -1,7 +1,7 @@
 ---
-- name: nvim plugin install
+- name: nvim packersync
   become: false
-  command: nvim --headless +PlugInstall +qall
+  command: nvim --headless +PackerSync +qall
 
 - name: fc-cache
   become: false
