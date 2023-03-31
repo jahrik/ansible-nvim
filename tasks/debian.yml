@@ -1,7 +1,7 @@
 ---
 - name: Install requirements
   become: true
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
     update_cache: true
@@ -19,7 +19,7 @@
 
 - name: Install python3-neovim if Ubuntu 18
   become: true
-  package:
+  ansible.builtin.package:
     name: python3-neovim
   when:
     - "ansible_distribution_major_version | int >= 18"
@@ -27,7 +27,7 @@
 
 - name: Install python3-pynvim if Ubuntu 20
   become: true
-  package:
+  ansible.builtin.package:
     name: python3-pynvim
   when:
     - "ansible_distribution_major_version | int >= 20"
@@ -35,7 +35,7 @@
 
 - name: Add neovim-ppa
   become: true
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'ppa:neovim-ppa/stable'
     update_cache: true
   tags:
@@ -43,7 +43,7 @@
 
 - name: Install the gpg key for nodejs LTS
   become: true
-  apt_key:
+  ansible.builtin.apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
     state: present
   tags:
@@ -51,16 +51,16 @@
 
 - name: Install the nodejs 17 LTS repos
   become: true
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb https://deb.nodesource.com/node_17.x {{ ansible_distribution_release }} main"
     state: present
-    update_cache: yes
+    update_cache: true
   tags:
     - nvim
 
 - name: Install nodejs
   become: true
-  apt:
+  ansible.builtin.apt:
     name: nodejs
     state: present
   tags:
@@ -74,11 +74,11 @@
 # Ubuntu 20.04 comes with an old version of neovim
 - name: Uninstall old versions of neovim if < 0.6
   become: true
-  apt:
+  ansible.builtin.apt:
     name: neovim
     state: absent
   when:
     - "'neovim' in ansible_facts.packages"
     - "ansible_facts.packages.neovim[0].version[:3] | float < 0.6"
   tags:
-      - nvim
+    - nvim
