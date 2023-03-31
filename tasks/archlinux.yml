@@ -1,7 +1,7 @@
 ---
 - name: Install requirements
   become: true
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items:
@@ -14,3 +14,10 @@
     - unzip
   tags:
     - nvim
+
+- name: "Install packer from AUR"
+  ansible.builtin.include_role:
+    name: "jahrik.yay"
+  vars:
+    aur_packages:
+      - nvim-packer-git

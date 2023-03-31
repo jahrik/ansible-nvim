@@ -70,13 +70,6 @@
 # Packer
 ########
 
-- name: "Include jahrik.nvim"
-  ansible.builtin.include_role:
-    name: "jahrik.yay"
-  vars:
-    aur_packages:
-      - nvim-packer-git
-
 # Installed from AUR with yay instead.
 # nvim-packer-git
 

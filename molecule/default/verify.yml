@@ -12,15 +12,15 @@
     assert:
       that: "'neovim' in ansible_facts.packages"
 
-  - name: Stat ~/.config/nvim/init.vim file
+  - name: Stat ~/.config/nvim/init.lua file
     stat:
-      path: ~/.config/nvim/init.vim
-    register: init_vim
+      path: ~/.config/nvim/init.lua
+    register: init_lua
 
-  - name: Assert ~/.config/nvim/init.vim exists
+  - name: Assert ~/.config/nvim/init.lua exists
     become: false
     assert:
-      that: init_vim.stat.exists
+      that: init_lua.stat.exists
 
   - name: Check NPM packages
     become: true
