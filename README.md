@@ -2,9 +2,7 @@
 
 [![CICD](https://github.com/jahrik/ansible-nvim/actions/workflows/cicd.yml/badge.svg)](https://github.com/jahrik/ansible-nvim/actions/workflows/cicd.yml)
 
-Install neovim, plug-vim, coc, plugins, and configurations
-
-Configurations are based on [en0's dotfiles](https://github.com/en0/dotfiles)
+Installs neovim, packer, plugins, fonts, and configures it all in Lua
 
 ## Requirements
 
