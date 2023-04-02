@@ -96,12 +96,16 @@
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "~/.config/nvim/{{ item }}"
+    mode: "0755"
   with_items:
     - after/plugin/colors.lua
     - after/plugin/lsp.lua
+    - after/plugin/nvimtree.lua
     - after/plugin/telescope.lua
+    - after/plugin/test.lua
     - after/plugin/treesitter.lua
     - init.lua
+    - lua/conf/utils.lua
     - lua/conf/plugins.lua
     - lua/conf/remap.lua
     - lua/conf/set.lua
