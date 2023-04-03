@@ -100,6 +100,7 @@
   with_items:
     - after/plugin/colors.lua
     - after/plugin/lsp.lua
+    - after/plugin/filetype.lua
     - after/plugin/nvimtree.lua
     - after/plugin/telescope.lua
     - after/plugin/test.lua

@@ -1,9 +1,12 @@
-require("conf.remap")
-require("conf.plugins")
-require("conf.set")
+local conf = {
+  "conf.set",
+  "conf.remap",
+  "conf.plugins"
+}
 
-local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
-for type, icon in pairs(signs) do
-  local hl = "LspDiagnosticsSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+for i = 1, #conf do
+  local ok, err = pcall(require, conf[i])
+  if not ok then
+    print(err)
+  end
 end
