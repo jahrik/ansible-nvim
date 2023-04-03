@@ -1,17 +1,21 @@
 ---
+- name: Uninstall packer if Arch
+  become: true
+  ansible.builtin.package:
+    name:
+      - nvim-packer-git
+    state: absent
+  when: ansible_os_family | lower == 'archlinux'
+
 - name: Uninstall neovim
   become: true
   ansible.builtin.package:
     name:
       - neovim
     state: absent
-  tags:
-    - nvim
 
 - name: Destroy ~/.config/nvim directory
   become: false
   ansible.builtin.file:
     path: ~/.config/nvim
     state: absent
-  tags:
-    - nvim
