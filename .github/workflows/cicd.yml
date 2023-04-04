@@ -39,7 +39,7 @@ jobs:
       - name: Molecule
         uses: gofrolist/molecule-action@v2
         with:
-          molecule_command: test
+          molecule_command: verify
           molecule_args: -d docker
         env:
           PY_COLORS: '1'
