@@ -53,8 +53,6 @@
     mode: "0755"
     recurse: true
   with_items:
-    - "nvim"
-    - "nvim/lua"
     - "nvim/lua/conf"
     - "nvim/after/plugin"
 
