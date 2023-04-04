@@ -1,8 +1,4 @@
 ---
-##############
-# Requirements
-##############
-
 - name: "Include OS specific tasks"
   ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
 
@@ -13,7 +9,7 @@
     state: directory
     recurse: true
 
-- name: Download Nerd Fonts (dejavu-sans-mono-nerfonts)
+- name: Download Nerd Fonts (dejavu-sans-mono-nerdfonts)
   become: false
   ansible.builtin.unarchive:
     src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip
@@ -21,10 +17,6 @@
     remote_src: true
     creates: '~/.local/share/fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf'
   notify: fc-cache
-
-########
-# Neovim
-########
 
 - name: Install neovim
   become: true
@@ -65,31 +57,6 @@
     - "nvim/lua"
     - "nvim/lua/conf"
     - "nvim/after/plugin"
-
-########
-# Packer
-########
-
-# Installed from AUR with yay instead.
-# nvim-packer-git
-
-# - name: create packer directories
-#   become: false
-#   file:
-#     path: "~/.local/share/nvim/site/pack/packer/start/"
-#     state: directory
-#     mode: 0755
-#     recurse: true
-#
-# - name: Install packer
-#   become: false
-#   get_url:
-#     url: https://github.com/wbthomason/packer.nvim
-#     dest: ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-
-#########
-# Configs
-#########
 
 - name: "Generate nvim config files"
   become: false

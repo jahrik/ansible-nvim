@@ -14,8 +14,6 @@
     - python3-setuptools
     - python3-virtualenv
     - unzip
-  tags:
-    - nvim
 
 - name: Install python3-neovim if Ubuntu 18
   become: true
@@ -36,18 +34,14 @@
 - name: Add neovim-ppa
   become: true
   ansible.builtin.apt_repository:
-    repo: 'ppa:neovim-ppa/stable'
+    repo: 'ppa:neovim-ppa/unstable'
     update_cache: true
-  tags:
-    - nvim
 
 - name: Install the gpg key for nodejs LTS
   become: true
   ansible.builtin.apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
     state: present
-  tags:
-    - nvim
 
 - name: Install the nodejs 17 LTS repos
   become: true
@@ -55,16 +49,12 @@
     repo: "deb https://deb.nodesource.com/node_17.x {{ ansible_distribution_release }} main"
     state: present
     update_cache: true
-  tags:
-    - nvim
 
 - name: Install nodejs
   become: true
   ansible.builtin.apt:
     name: nodejs
     state: present
-  tags:
-    - nvim
 
 - name: Gather package facts
   become: true
@@ -80,5 +70,3 @@
   when:
     - "'neovim' in ansible_facts.packages"
     - "ansible_facts.packages.neovim[0].version[:3] | float < 0.6"
-  tags:
-    - nvim
