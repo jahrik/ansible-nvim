@@ -5,10 +5,12 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - fd
     - fontconfig
     - nodejs
     - npm
     - python-pynvim
     - python-setuptools
     - python-virtualenv
+    - ripgrep
     - unzip

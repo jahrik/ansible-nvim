@@ -9,10 +9,12 @@
   with_items:
     - curl
     - dirmngr
+    - fd-find
     - fontconfig
     - git
     - python3-setuptools
     - python3-virtualenv
+    - ripgrep
     - unzip
 
 - name: Install python3-neovim if Ubuntu 18
