@@ -27,6 +27,9 @@ map("n", "<Leader>c", ":BufferClose<CR>")
 map("v", "<", "<gv" )
 map("v", ">", ">gv" )
 
+-- Trouble
+map("n", "<Leader>T", ":Trouble<CR>" )
+
 -- Unit Test
 map("n", "<Leader>tf", ":TestNearest<CR>" )
 map("n", "<Leader>tt", ":TestLast<CR>" )
