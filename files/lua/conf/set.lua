@@ -1,3 +1,5 @@
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 vim.opt.autoread = true
 vim.opt.background = 'dark'
 vim.opt.completeopt = {'menuone', 'noinsert', 'noselect'}  -- completion options (for deoplete)

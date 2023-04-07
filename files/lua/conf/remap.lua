@@ -1,14 +1,27 @@
 -- Import & assign the map() function from the utils module
 local map = require("conf.utils").map
+local opts = { silent = true }
 
 vim.g.mapleader = ","
 
 -- Remove search highlight
-map("n", "<bs>", ":nohlsearch<cr>", { silent = true })
+map("n", "<bs>", ":nohlsearch<cr>", opts)
 
 -- Project Explorer
 map("n", "<Leader>e", ":NvimTreeOpen<CR>")
 map("n", "<C-p>", ":NvimTreeToggle<CR>")
+
+-- Buffer navigation
+map("n", "<Leader>h", ":BufferPrevious<CR>")
+map("n", "<Leader>l", ":BufferNext<CR>")
+map("n", "<Leader>H", ":BufferMovePrevious<CR>")
+map("n", "<Leader>L", ":BufferMoveNext<CR>")
+
+-- Pin/unpin buffer
+map('n', '<Leader>p', ':BufferPin<CR>', opts)
+
+-- Close buffer
+map("n", "<Leader>c", ":BufferClose<CR>")
 
 -- Better indent control
 map("v", "<", "<gv" )
