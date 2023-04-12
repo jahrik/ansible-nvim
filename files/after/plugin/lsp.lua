@@ -7,7 +7,15 @@ local lsp = require('lsp-zero').preset({
 
 -- (Optional) Configure lua language server for neovim
 lsp.nvim_workspace()
+
 lsp.setup()
 
--- Ansible file type
-vim.filetype.add({pattern = {[".*/tasks/.*.yml"] = "yaml.ansible"}})
+require'lspconfig'.lua_ls.setup {
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'love' }
+            }
+        }
+    }
+}
