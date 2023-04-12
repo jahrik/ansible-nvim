@@ -71,4 +71,4 @@
     state: absent
   when:
     - "'neovim' in ansible_facts.packages"
-    - "ansible_facts.packages.neovim[0].version[:3] | float < 0.6"
+    - "ansible_facts.packages.neovim[0].version is version('0.6.0', '<')"
