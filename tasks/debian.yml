@@ -72,3 +72,16 @@
   when:
     - "'neovim' in ansible_facts.packages"
     - "ansible_facts.packages.neovim[0].version is version('0.6.0', '<')"
+
+- name: Install neovim
+  become: true
+  ansible.builtin.package:
+    name: neovim
+    state: present
+
+- name: Install NPM packages
+  become: true
+  community.general.npm:
+    name: neovim
+    global: true
+    state: present
