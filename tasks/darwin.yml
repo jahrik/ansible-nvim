@@ -1,0 +1,13 @@
+---
+- name: Install neovim
+  become: false
+  ansible.builtin.package:
+    name: neovim
+    state: present
+
+- name: Install NPM packages
+  become: false
+  community.general.npm:
+    name: neovim
+    global: true
+    state: present
