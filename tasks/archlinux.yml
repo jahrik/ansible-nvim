@@ -14,3 +14,16 @@
     - python-virtualenv
     - ripgrep
     - unzip
+
+- name: Install neovim
+  become: true
+  ansible.builtin.package:
+    name: neovim
+    state: present
+
+- name: Install NPM packages
+  become: true
+  community.general.npm:
+    name: neovim
+    global: true
+    state: present
