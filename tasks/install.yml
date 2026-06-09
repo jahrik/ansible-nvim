@@ -16,7 +16,7 @@
     dest: ~/.local/share/fonts
     remote_src: true
     creates: '~/.local/share/fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf'
-  notify: fc-cache
+  notify: Fc-cache
 
 - name: Install neovim
   become: true
@@ -75,4 +75,4 @@
     - lua/conf/plugins.lua
     - lua/conf/remap.lua
     - lua/conf/set.lua
-  notify: "nvim packersync"
+  notify: Nvim packersync
