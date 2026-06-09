@@ -53,6 +53,20 @@ None
       roles:
         - jahrik.nvim
 
+## Testing
+
+```bash
+molecule test
+```
+
+Or step by step:
+
+```bash
+molecule converge
+molecule verify
+molecule destroy
+```
+
 ## License
 
 GPLv2
