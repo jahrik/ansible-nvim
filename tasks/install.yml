@@ -52,7 +52,7 @@
     state: directory
     mode: "0755"
     recurse: true
-  with_items:
+  loop:
     - "nvim/lua/conf"
     - "nvim/after/plugin"
 
@@ -62,7 +62,7 @@
     src: "{{ item }}"
     dest: "~/.config/nvim/{{ item }}"
     mode: "0755"
-  with_items:
+  loop:
     - after/plugin/colors.lua
     - after/plugin/lsp.lua
     - after/plugin/filetype.lua

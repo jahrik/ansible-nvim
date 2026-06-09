@@ -2,20 +2,19 @@
 - name: Install requirements
   become: true
   ansible.builtin.package:
-    name: "{{ item }}"
+    name:
+      - curl
+      - dirmngr
+      - fd-find
+      - fontconfig
+      - git
+      - python3-setuptools
+      - python3-virtualenv
+      - ripgrep
+      - unzip
     state: present
     update_cache: true
     cache_valid_time: 3600
-  with_items:
-    - curl
-    - dirmngr
-    - fd-find
-    - fontconfig
-    - git
-    - python3-setuptools
-    - python3-virtualenv
-    - ripgrep
-    - unzip
 
 - name: Install python3-neovim if Ubuntu 18
   become: true
@@ -25,13 +24,11 @@
     - "ansible_distribution_major_version | int >= 18"
     - "ansible_distribution_major_version | int < 20"
 
-- name: Install python3-pynvim if Ubuntu 20
+- name: Install python3-pynvim
   become: true
   ansible.builtin.package:
     name: python3-pynvim
-  when:
-    - "ansible_distribution_major_version | int >= 20"
-    - "ansible_distribution_major_version | int < 22"
+  when: "ansible_distribution_major_version | int >= 20"
 
 - name: Add neovim-ppa
   become: true
@@ -42,13 +39,13 @@
 - name: Install the gpg key for nodejs LTS
   become: true
   ansible.builtin.apt_key:
-    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    url: "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
     state: present
 
-- name: Install the nodejs 17 LTS repos
+- name: Install the nodejs 20 LTS repos
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb https://deb.nodesource.com/node_17.x {{ ansible_distribution_release }} main"
+    repo: "deb https://deb.nodesource.com/node_20.x nodistro main"
     state: present
     update_cache: true
 
