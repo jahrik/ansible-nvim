@@ -1,11 +1,10 @@
 ---
-- name: nvim packersync
+- name: Nvim packersync
   become: false
   ansible.builtin.command: timeout 60 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-  # nvim --headless +PackerSync +qa
   ignore_errors: true
 
-- name: fc-cache
+- name: Fc-cache
   become: false
-  command: fc-cache -f ~/.local/share/fonts/
+  ansible.builtin.command: fc-cache -f ~/.local/share/fonts/
   ignore_errors: true
