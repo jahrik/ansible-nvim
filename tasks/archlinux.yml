@@ -2,6 +2,7 @@
 - name: Install requirements
   become: true
   community.general.pacman:
+    update_cache: true
     name:
       - fd
       - fontconfig
