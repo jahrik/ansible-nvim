@@ -6,14 +6,19 @@
     state: directory
     mode: "0755"
 
-# Static binaries installed to ~/.local/bin persist across SteamOS updates.
-# Delete the binary to force a version upgrade on next run.
+- name: Check if nvim binary exists
+  become: false
+  ansible.builtin.stat:
+    path: ~/.local/bin/nvim
+  register: nvim_stat
+
 - name: Download neovim tarball
   become: false
   ansible.builtin.get_url:
     url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
     dest: /tmp/nvim-linux-x86_64.tar.gz
     mode: "0644"
+  when: not nvim_stat.stat.exists
 
 - name: Extract neovim to ~/.local
   become: false
@@ -25,13 +30,19 @@
       - --strip-components=1
     creates: ~/.local/bin/nvim
 
-# ripgrep and fd use versioned filenames — query the GitHub API to resolve URLs
+- name: Check if rg binary exists
+  become: false
+  ansible.builtin.stat:
+    path: ~/.local/bin/rg
+  register: rg_stat
+
 - name: Get latest ripgrep release info
   become: false
   ansible.builtin.uri:
     url: https://api.github.com/repos/BurntSushi/ripgrep/releases/latest
     return_content: true
   register: rg_release
+  when: not rg_stat.stat.exists
 
 - name: Download and extract ripgrep binary
   become: false
@@ -44,6 +55,13 @@
       - --wildcards
       - "*/rg"
     creates: ~/.local/bin/rg
+  when: not rg_stat.stat.exists
+
+- name: Check if fd binary exists
+  become: false
+  ansible.builtin.stat:
+    path: ~/.local/bin/fd
+  register: fd_stat
 
 - name: Get latest fd release info
   become: false
@@ -51,6 +69,7 @@
     url: https://api.github.com/repos/sharkdp/fd/releases/latest
     return_content: true
   register: fd_release
+  when: not fd_stat.stat.exists
 
 - name: Download and extract fd binary
   become: false
@@ -63,3 +82,4 @@
       - --wildcards
       - "*/fd"
     creates: ~/.local/bin/fd
+  when: not fd_stat.stat.exists
