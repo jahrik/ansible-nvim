@@ -60,14 +60,14 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install ansible
-        run: pip3 install ansible
+      - name: Install dependencies
+        run: pip3 install ansible molecule
 
       - name: Install collections
         run: ansible-galaxy collection install community.general
 
-      - name: Run converge
-        run: ansible-playbook molecule/default/converge.yml -i "localhost," -c local
+      - name: Run macOS molecule test
+        run: molecule test -s macos
 
   release:
     name: Release
