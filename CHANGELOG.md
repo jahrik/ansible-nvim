@@ -6,6 +6,11 @@ All notable changes to this role will be documented in this file.
 
 ### Changed
 
+- **Neovim version (Ubuntu/Debian)**: Install from neovim-ppa/unstable to get 0.10+ (required by plugins)
+- **OS task layout**: Moved neovim install, font download, and font cache into respective OS task files
+- **Molecule verify**: Added nvim binary check, lua syntax validation, and lazy.nvim plugin sync test
+- **Molecule Arch**: Added prepare.yml to disable pacman internal sandbox in Docker containers
+- **Deprecated syntax**: Replaced `ansible_os_family` with `ansible_facts['os_family']`
 - **Config structure**: Replaced flat `lua/conf/` layout with `lua/core/` + `lua/plugins/` (lazy.nvim auto-import)
 - **Leader key**: Changed from `,` to `<Space>`
 - **Indent width**: Changed from 2 spaces to 4 spaces

@@ -1,0 +1,11 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Disable pacman internal sandbox (Arch containers)
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/pacman.conf
+        line: "DisableSandbox"
+        insertafter: "^\\[options\\]"
+      when: ansible_facts['os_family'] == 'Archlinux'

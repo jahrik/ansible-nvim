@@ -9,50 +9,25 @@
     is_steamdeck: "{{ steamos_release.stat.exists }}"
 
 - name: Include OS specific tasks
-  ansible.builtin.include_tasks: "{{ 'steamdeck' if is_steamdeck else ansible_os_family | lower }}.yml"
-
-- name: Create ~/.local/share/fonts directory
-  become: false
-  ansible.builtin.file:
-    path: ~/.local/share/fonts
-    state: directory
-    recurse: true
-  when: ansible_os_family != 'Darwin'
-
-- name: Download Nerd Fonts (dejavu-sans-mono-nerdfonts)
-  become: false
-  ansible.builtin.unarchive:
-    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip
-    dest: ~/.local/share/fonts
-    remote_src: true
-    creates: '~/.local/share/fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf'
-  notify: Fc-cache
-  when: ansible_os_family != 'Darwin'
-
-- name: Install neovim
-  become: true
-  ansible.builtin.package:
-    name: neovim
-    state: present
-  when: ansible_os_family == 'Archlinux' and not is_steamdeck
+  ansible.builtin.include_tasks: "{{ 'steamdeck' if is_steamdeck else ansible_facts['os_family'] | lower }}.yml"
 
 - name: Create ~/.config/nvim directories
   become: false
   ansible.builtin.file:
-    path: "~/.config/nvim/lua/{{ item }}"
+    path: "~/.config/{{ item }}"
     state: directory
     mode: "0755"
     recurse: true
   loop:
-    - core
-    - plugins
+    - nvim/lua/core
+    - nvim/lua/plugins
 
 - name: Generate nvim config files
   become: false
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "~/.config/nvim/{{ item }}"
-    mode: "0644"
+    mode: "0755"
   loop:
     - init.lua
     - lua/core/autocmds.lua

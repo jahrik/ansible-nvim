@@ -9,7 +9,7 @@ Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration
 | Platform | Install method |
 |---|---|
 | Arch Linux | `pacman` |
-| Ubuntu / Debian | `apt` |
+| Ubuntu / Debian | `apt` via [neovim-ppa/unstable](https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable) (provides Neovim 0.10+) |
 | macOS | Homebrew (`become: false` throughout) |
 | Steam Deck / SteamOS | Static binaries to `~/.local/bin` |
 
@@ -331,6 +331,13 @@ Steam Deck scenario:
 
 ```bash
 molecule test -s steamdeck
+```
+
+Localhost scenario (used in CI on the macOS GitHub Actions runner):
+
+```bash
+molecule converge -s localhost
+molecule verify -s localhost
 ```
 
 ## License

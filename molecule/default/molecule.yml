@@ -11,6 +11,9 @@ platforms:
     image: jahrik/docker-archlinux-ansible
     pre_build_image: true
     pull: true
+    privileged: true
+    security_opts:
+      - seccomp=unconfined
 provisioner:
   name: ansible
   inventory:
