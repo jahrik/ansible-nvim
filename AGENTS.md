@@ -1,36 +1,58 @@
 # ansible-nvim
 
-Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration to `~/.config/nvim/`. Sets up LSP support, Packer plugins, Nerd Fonts, and the `neovim` npm and Python packages. Supports Arch Linux, Debian/Ubuntu, and macOS.
+Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration to `~/.config/nvim/`. Uses [lazy.nvim](https://github.com/folke/lazy.nvim) for plugin management. Supports Arch Linux, Debian/Ubuntu, macOS, and Steam Deck.
 
 ## Key Variables
 
 | Variable | Default | Description |
 |---|---|---|
-| `install` | `true` | Set to `false` to uninstall neovim and remove `~/.config/nvim` |
+| `install` | `true` | Set to `false` to uninstall Neovim and remove `~/.config/nvim` |
 
 ## Task Flow
 
 `tasks/main.yml` → `install.yml` or `uninstall.yml` based on `install | bool`
 
 **install.yml:**
-1. Detect Steam Deck (`/etc/steamos-release`) and set `is_steamdeck` fact
-2. Include `steamdeck.yml`, `archlinux.yml`, `debian.yml`, or `darwin.yml` for OS-specific dependencies
-3. Create `~/.local/share/fonts` and download DejaVu Nerd Fonts
+1. Stat `/etc/steamos-release` → set `is_steamdeck` fact
+2. Include OS-specific tasks: `steamdeck.yml`, `archlinux.yml`, `debian.yml`, or `darwin.yml`
+3. Create `~/.local/share/fonts`, download DejaVu Nerd Fonts, notify `Fc-cache` handler
 4. Install `neovim` package (Arch only — other OS tasks own their install)
-5. Install `neovim` npm package globally (skipped on Steam Deck — steamdeck.yml handles it with user prefix)
-6. Create Python virtualenv at `/usr/local/share/nvim/python3` (skipped on Steam Deck and Darwin)
-7. Create `~/.config/nvim/` directory tree
-8. Copy all Lua config files (`init.lua`, `lua/conf/*.lua`, `after/plugin/*.lua`)
+5. Create `~/.config/nvim/lua/conf/plugins/` directory tree
+6. Copy all Lua config files (`init.lua`, `lua/conf/*.lua`, `lua/conf/plugins/*.lua`)
 
-**archlinux.yml:** `community.general.pacman` installs fd, nodejs, npm, python-pynvim, ripgrep, etc.
+**archlinux.yml:** pacman installs fd, fontconfig, ripgrep, unzip
 
-**debian.yml:** apt installs nodejs, npm, and neovim from Ubuntu universe (no PPA needed on 24.04+)
+**debian.yml:** apt installs fd-find, fontconfig, ripgrep, unzip, curl, git, neovim
 
-**darwin.yml:** Homebrew installs fd, fontconfig, node, ripgrep, unzip, neovim, and pynvim (become: false throughout)
+**darwin.yml:** Homebrew installs fd, fontconfig, ripgrep, unzip, neovim (`become: false` throughout)
 
-**steamdeck.yml:** Downloads neovim static binary tarball and ripgrep/fd static binaries to `~/.local/bin/` (persists across SteamOS updates). Configures npm prefix to `~/.npm-global` and installs pynvim with `--user`. All tasks run without `become`.
+**steamdeck.yml:** All tasks run without `become` (SteamOS has a read-only root).
+- Downloads `nvim-linux-x86_64.tar.gz` to `~/.local/`
+- Resolves ripgrep and fd latest releases via GitHub API, extracts musl static binaries to `~/.local/bin/`
+- Uses `creates:` guards for idempotency — delete a binary to force upgrade
 
-**uninstall.yml:** removes neovim (homebrew on Darwin, tarball files on Steam Deck, package module on Linux) and `~/.config/nvim`
+**uninstall.yml:** Removes neovim (homebrew on Darwin, tarball files on Steam Deck, package module on Linux) and `~/.config/nvim/`
+
+## Config Structure
+
+```
+~/.config/nvim/
+├── init.lua                    # Loads conf.set, conf.remap, conf.plugins
+└── lua/conf/
+    ├── set.lua                 # Vim options
+    ├── remap.lua               # Key remappings
+    ├── utils.lua               # map() helper
+    ├── plugins.lua             # lazy.nvim bootstrap + plugin specs
+    └── plugins/                # Per-plugin config files
+        ├── colors.lua          # nightfox + terafox colorscheme
+        ├── filetype.lua        # filetype.nvim overrides
+        ├── lsp.lua             # lsp-zero v4 + nvim-cmp + mason
+        ├── nvimtree.lua        # nvim-tree setup
+        ├── telescope.lua       # telescope keymaps
+        └── test.lua            # vim-test keymaps (commented out)
+```
+
+Each plugin's config is `require()`d from its lazy.nvim `config` callback — guarantees correct load order without relying on `after/plugin/` auto-sourcing.
 
 ## Testing
 
@@ -38,6 +60,7 @@ Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration
 yamllint .
 ansible-lint
 molecule test
+molecule test -s steamdeck
 molecule converge
 molecule destroy
 ```
@@ -46,4 +69,6 @@ molecule destroy
 
 - **Lint**: yamllint + ansible-lint
 - **Molecule**: Ubuntu 24.04 + Arch Linux via Docker
-- **macOS**: ansible-playbook against the GHA runner directly (macos-latest)
+- **Steam Deck**: Arch container with `/etc/steamos-release` stub
+- **macOS**: `ansible-playbook` against the GHA runner directly (macos-latest)
+- **Release**: publishes to Ansible Galaxy on merge to `main`
