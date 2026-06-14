@@ -1,5 +1,5 @@
 ---
-- name: Configure nvim
+- name: Converge
   hosts: all
   become: true
   vars:

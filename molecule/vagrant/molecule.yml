@@ -1,0 +1,25 @@
+---
+# Local macOS testing via Vagrant. Requires:
+#   gem install vagrant
+#   vagrant plugin install vagrant-parallels  (Parallels Desktop on Apple Silicon)
+#   vagrant plugin install vagrant-vmware-desktop  (VMware Fusion on Intel)
+#
+# Run with: molecule test -s vagrant
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider_name: parallels
+platforms:
+  - name: macos
+    box: ramrod/macOS-ventura
+    memory: 4096
+    cpus: 2
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      macos:
+        ansible_user: vagrant
+verifier:
+  name: ansible

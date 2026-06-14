@@ -48,10 +48,30 @@ jobs:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
 
+  macos:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v5
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install ansible
+        run: pip3 install ansible
+
+      - name: Install collections
+        run: ansible-galaxy collection install community.general
+
+      - name: Run converge
+        run: ansible-playbook molecule/default/converge.yml -i "localhost," -c local
+
   release:
     name: Release
-    needs:
-      - molecule
+    needs: [molecule]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:

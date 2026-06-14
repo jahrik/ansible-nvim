@@ -23,9 +23,10 @@
   ansible.builtin.package:
     name: neovim
     state: present
+  when: ansible_os_family != 'Darwin'
 
 - name: Install NPM packages
-  become: true
+  become: "{{ ansible_os_family != 'Darwin' }}"
   community.general.npm:
     name: neovim
     global: true
@@ -37,6 +38,7 @@
     mode: "0755"
     path: /usr/local/share/nvim/
     state: directory
+  when: ansible_os_family != 'Darwin'
 
 - name: Create python virtual env and install neovim module
   become: true
@@ -44,6 +46,7 @@
     name: neovim
     virtualenv: /usr/local/share/nvim/python3
     virtualenv_python: python3
+  when: ansible_os_family != 'Darwin'
 
 - name: Create ~/.config/nvim directories
   become: false
