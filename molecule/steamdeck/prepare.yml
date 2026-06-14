@@ -1,0 +1,19 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install prerequisites (curl, unzip)
+      become: true
+      community.general.pacman:
+        name:
+          - curl
+          - unzip
+        state: present
+        update_cache: true
+
+    - name: Create /etc/steamos-release to trigger Steam Deck detection
+      become: true
+      ansible.builtin.file:
+        path: /etc/steamos-release
+        state: touch
+        mode: "0644"

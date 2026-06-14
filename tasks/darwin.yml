@@ -5,7 +5,6 @@
     name:
       - fd
       - fontconfig
-      - node
       - ripgrep
       - unzip
     state: present
@@ -15,10 +14,3 @@
   community.general.homebrew:
     name: neovim
     state: present
-
-- name: Install pynvim (macOS)
-  become: false
-  ansible.builtin.pip:
-    name: pynvim
-    state: present
-    executable: pip3

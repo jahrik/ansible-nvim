@@ -13,13 +13,14 @@ Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration
 `tasks/main.yml` → `install.yml` or `uninstall.yml` based on `install | bool`
 
 **install.yml:**
-1. Include `archlinux.yml`, `debian.yml`, or `darwin.yml` for OS-specific dependencies
-2. Create `~/.local/share/fonts` and download DejaVu Nerd Fonts
-3. Install `neovim` package (Arch only — Debian and Darwin handle this in their OS task)
-4. Install `neovim` npm package globally
-5. Create Python virtualenv at `/usr/local/share/nvim/python3` with `neovim` module (Linux only)
-6. Create `~/.config/nvim/` directory tree
-7. Copy all Lua config files (`init.lua`, `lua/conf/*.lua`, `after/plugin/*.lua`)
+1. Detect Steam Deck (`/etc/steamos-release`) and set `is_steamdeck` fact
+2. Include `steamdeck.yml`, `archlinux.yml`, `debian.yml`, or `darwin.yml` for OS-specific dependencies
+3. Create `~/.local/share/fonts` and download DejaVu Nerd Fonts
+4. Install `neovim` package (Arch only — other OS tasks own their install)
+5. Install `neovim` npm package globally (skipped on Steam Deck — steamdeck.yml handles it with user prefix)
+6. Create Python virtualenv at `/usr/local/share/nvim/python3` (skipped on Steam Deck and Darwin)
+7. Create `~/.config/nvim/` directory tree
+8. Copy all Lua config files (`init.lua`, `lua/conf/*.lua`, `after/plugin/*.lua`)
 
 **archlinux.yml:** `community.general.pacman` installs fd, nodejs, npm, python-pynvim, ripgrep, etc.
 
@@ -27,7 +28,9 @@ Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration
 
 **darwin.yml:** Homebrew installs fd, fontconfig, node, ripgrep, unzip, neovim, and pynvim (become: false throughout)
 
-**uninstall.yml:** removes neovim (via homebrew on Darwin, package module elsewhere) and `~/.config/nvim`
+**steamdeck.yml:** Downloads neovim static binary tarball and ripgrep/fd static binaries to `~/.local/bin/` (persists across SteamOS updates). Configures npm prefix to `~/.npm-global` and installs pynvim with `--user`. All tasks run without `become`.
+
+**uninstall.yml:** removes neovim (homebrew on Darwin, tarball files on Steam Deck, package module on Linux) and `~/.config/nvim`
 
 ## Testing
 

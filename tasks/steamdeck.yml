@@ -1,0 +1,65 @@
+---
+- name: Ensure ~/.local/bin exists
+  become: false
+  ansible.builtin.file:
+    path: ~/.local/bin
+    state: directory
+    mode: "0755"
+
+# Static binaries installed to ~/.local/bin persist across SteamOS updates.
+# Delete the binary to force a version upgrade on next run.
+- name: Download neovim tarball
+  become: false
+  ansible.builtin.get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    dest: /tmp/nvim-linux-x86_64.tar.gz
+    mode: "0644"
+
+- name: Extract neovim to ~/.local
+  become: false
+  ansible.builtin.unarchive:
+    src: /tmp/nvim-linux-x86_64.tar.gz
+    dest: ~/.local/
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+    creates: ~/.local/bin/nvim
+
+# ripgrep and fd use versioned filenames — query the GitHub API to resolve URLs
+- name: Get latest ripgrep release info
+  become: false
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/BurntSushi/ripgrep/releases/latest
+    return_content: true
+  register: rg_release
+
+- name: Download and extract ripgrep binary
+  become: false
+  ansible.builtin.unarchive:
+    src: "{{ rg_release.json.assets | selectattr('name', 'search', 'x86_64-unknown-linux-musl\\.tar\\.gz$') | map(attribute='browser_download_url') | first }}"
+    dest: ~/.local/bin/
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+      - --wildcards
+      - "*/rg"
+    creates: ~/.local/bin/rg
+
+- name: Get latest fd release info
+  become: false
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/sharkdp/fd/releases/latest
+    return_content: true
+  register: fd_release
+
+- name: Download and extract fd binary
+  become: false
+  ansible.builtin.unarchive:
+    src: "{{ fd_release.json.assets | selectattr('name', 'search', 'x86_64-unknown-linux-musl\\.tar\\.gz$') | map(attribute='browser_download_url') | first }}"
+    dest: ~/.local/bin/
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+      - --wildcards
+      - "*/fd"
+    creates: ~/.local/bin/fd

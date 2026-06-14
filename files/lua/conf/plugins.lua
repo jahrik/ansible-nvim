@@ -1,99 +1,97 @@
--- Bootstrap Packer
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local out = vim.fn.system({
+    'git', 'clone', '--filter=blob:none', '--branch=stable',
+    'https://github.com/folke/lazy.nvim.git', lazypath,
+  })
+  if vim.v.shell_error ~= 0 then
+    error('Error cloning lazy.nvim:\n' .. out)
   end
-  return false
 end
+vim.opt.rtp:prepend(lazypath)
 
-local packer_bootstrap = ensure_packer()
+require('lazy').setup({
 
-return require('packer').startup(function(use)
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function() require('conf.plugins.telescope') end,
+  },
 
-    -- Packer
-    use 'wbthomason/packer.nvim'
+  {
+    'EdenEast/nightfox.nvim',
+    config = function() require('conf.plugins.colors') end,
+  },
 
-    use {
-        'nvim-telescope/telescope.nvim',
-        tag = '0.1.1',
-        requires = {{'nvim-lua/plenary.nvim'}}
-    }
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function() require('conf.plugins.nvimtree') end,
+  },
 
-    -- colorscheme
-    use "EdenEast/nightfox.nvim"
+  'nvim-tree/nvim-web-devicons',
 
-    -- nvim-tree & devicons
-    use 'nvim-tree/nvim-tree.lua'
-    use 'nvim-tree/nvim-web-devicons'
+  { 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons' },
 
-    -- barbar
-    use {'romgrk/barbar.nvim', requires = 'nvim-web-devicons'}
+  {
+    'nathom/filetype.nvim',
+    config = function() require('conf.plugins.filetype') end,
+  },
 
-    -- filetype
-    use("nathom/filetype.nvim")
+  'ntpeters/vim-better-whitespace',
 
-    -- better whitespace
-    use 'ntpeters/vim-better-whitespace'
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup({ options = { theme = 'terafox' } })
+    end,
+  },
 
-    -- lualine
-    use {
-        'nvim-lualine/lualine.nvim',
-        requires = {'nvim-tree/nvim-web-devicons', opt = true},
-        config = function()
-            require('lualine').setup({
-                options = { theme = "terafox", }
-            })
-        end
-    }
+  { 'psf/black', cmd = 'Black' },
 
-    -- Black
-    use {"psf/black", cmd = {"Black"}}
+  {
+    'vim-test/vim-test',
+    config = function() require('conf.plugins.test') end,
+  },
 
-    -- vim-test
-    use "vim-test/vim-test"
+  {
+    'folke/which-key.nvim',
+    config = function() require('which-key').setup {} end,
+  },
 
-    -- which key
-    use {
-        "folke/which-key.nvim",
-        config = function() require("which-key").setup {} end
-    }
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter').setup()
+    end,
+  },
 
-    -- treesitter
-    use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+  {
+    'folke/trouble.nvim',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+  },
 
-    use {
-        "folke/trouble.nvim",
-        requires = "nvim-tree/nvim-web-devicons",
-    }
+  {
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v4.x',
+    dependencies = {
+      'neovim/nvim-lspconfig',
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'hrsh7th/nvim-cmp',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-nvim-lua',
+      'L3MON4D3/LuaSnip',
+      'rafamadriz/friendly-snippets',
+    },
+    config = function() require('conf.plugins.lsp') end,
+  },
 
-    use {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v1.x',
-        requires = {
-            -- LSP Support
-            {'neovim/nvim-lspconfig'}, -- Required
-            {'williamboman/mason.nvim'}, -- Optional
-            {'williamboman/mason-lspconfig.nvim'}, -- Optional
-            -- Autocompletion
-            {'hrsh7th/nvim-cmp'}, -- Required
-            {'hrsh7th/cmp-nvim-lsp'}, -- Required
-            {'hrsh7th/cmp-buffer'}, -- Optional
-            {'hrsh7th/cmp-path'}, -- Optional
-            {'saadparwaiz1/cmp_luasnip'}, -- Optional
-            {'hrsh7th/cmp-nvim-lua'}, -- Optional
-            -- Snippets
-            {'L3MON4D3/LuaSnip'}, -- Required
-            {'rafamadriz/friendly-snippets'} -- Optional
-        }
-    }
-
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if packer_bootstrap then
-      require('packer').sync()
-    end
-end)
+})
