@@ -7,20 +7,14 @@
       - fd-find
       - fontconfig
       - git
-      - python3-pynvim
-      - python3-setuptools
-      - python3-virtualenv
       - ripgrep
       - unzip
     state: present
     update_cache: true
     cache_valid_time: 3600
 
-- name: Install nodejs, npm, and neovim
+- name: Install neovim
   become: true
   ansible.builtin.apt:
-    name:
-      - nodejs
-      - npm
-      - neovim
+    name: neovim
     state: present

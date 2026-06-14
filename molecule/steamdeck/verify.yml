@@ -1,0 +1,54 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Stat ~/.local/bin/nvim
+      ansible.builtin.stat:
+        path: ~/.local/bin/nvim
+      register: nvim_bin
+
+    - name: Assert nvim binary exists
+      ansible.builtin.assert:
+        that: nvim_bin.stat.exists
+        fail_msg: "~/.local/bin/nvim not found"
+
+    - name: Stat ~/.local/bin/rg
+      ansible.builtin.stat:
+        path: ~/.local/bin/rg
+      register: rg_bin
+
+    - name: Assert ripgrep binary exists
+      ansible.builtin.assert:
+        that: rg_bin.stat.exists
+        fail_msg: "~/.local/bin/rg not found"
+
+    - name: Stat ~/.local/bin/fd
+      ansible.builtin.stat:
+        path: ~/.local/bin/fd
+      register: fd_bin
+
+    - name: Assert fd binary exists
+      ansible.builtin.assert:
+        that: fd_bin.stat.exists
+        fail_msg: "~/.local/bin/fd not found"
+
+    - name: Stat ~/.config/nvim/init.lua
+      ansible.builtin.stat:
+        path: ~/.config/nvim/init.lua
+      register: init_lua
+
+    - name: Assert init.lua exists
+      ansible.builtin.assert:
+        that: init_lua.stat.exists
+        fail_msg: "~/.config/nvim/init.lua not found"
+
+    - name: Stat ~/.config/nvim/lua/conf/plugins/lsp.lua
+      ansible.builtin.stat:
+        path: ~/.config/nvim/lua/conf/plugins/lsp.lua
+      register: lsp_lua
+
+    - name: Assert lsp.lua exists
+      ansible.builtin.assert:
+        that: lsp_lua.stat.exists
+        fail_msg: "~/.config/nvim/lua/conf/plugins/lsp.lua not found"

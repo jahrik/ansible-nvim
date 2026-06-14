@@ -1,8 +1,17 @@
 ---
-- name: "Include OS specific tasks"
-  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
+- name: Check for Steam Deck
+  ansible.builtin.stat:
+    path: /etc/steamos-release
+  register: steamos_release
 
-- name: "Create ~/.local/share/fonts directory"
+- name: Set is_steamdeck fact
+  ansible.builtin.set_fact:
+    is_steamdeck: "{{ steamos_release.stat.exists }}"
+
+- name: Include OS specific tasks
+  ansible.builtin.include_tasks: "{{ 'steamdeck' if is_steamdeck else ansible_os_family | lower }}.yml"
+
+- name: Create ~/.local/share/fonts directory
   become: false
   ansible.builtin.file:
     path: ~/.local/share/fonts
@@ -23,30 +32,7 @@
   ansible.builtin.package:
     name: neovim
     state: present
-  when: ansible_os_family == 'Archlinux'
-
-- name: Install NPM packages
-  become: "{{ ansible_os_family != 'Darwin' }}"
-  community.general.npm:
-    name: neovim
-    global: true
-    state: present
-
-- name: Ensure /usr/local/share/nvim/ directory exists
-  become: true
-  ansible.builtin.file:
-    mode: "0755"
-    path: /usr/local/share/nvim/
-    state: directory
-  when: ansible_os_family != 'Darwin'
-
-- name: Create python virtual env and install neovim module
-  become: true
-  ansible.builtin.pip:
-    name: neovim
-    virtualenv: /usr/local/share/nvim/python3
-    virtualenv_python: python3
-  when: ansible_os_family != 'Darwin'
+  when: ansible_os_family == 'Archlinux' and not is_steamdeck
 
 - name: Create ~/.config/nvim directories
   become: false
@@ -56,26 +42,23 @@
     mode: "0755"
     recurse: true
   loop:
-    - "nvim/lua/conf"
-    - "nvim/after/plugin"
+    - "nvim/lua/conf/plugins"
 
-- name: "Generate nvim config files"
+- name: Generate nvim config files
   become: false
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "~/.config/nvim/{{ item }}"
     mode: "0755"
   loop:
-    - after/plugin/colors.lua
-    - after/plugin/lsp.lua
-    - after/plugin/filetype.lua
-    - after/plugin/nvimtree.lua
-    - after/plugin/telescope.lua
-    - after/plugin/test.lua
-    - after/plugin/treesitter.lua
     - init.lua
     - lua/conf/utils.lua
     - lua/conf/plugins.lua
     - lua/conf/remap.lua
     - lua/conf/set.lua
-  notify: Nvim packersync
+    - lua/conf/plugins/colors.lua
+    - lua/conf/plugins/filetype.lua
+    - lua/conf/plugins/lsp.lua
+    - lua/conf/plugins/nvimtree.lua
+    - lua/conf/plugins/telescope.lua
+    - lua/conf/plugins/test.lua

@@ -29,6 +29,7 @@ Installs [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts/releases/download/
 * Arch Linux
 * Ubuntu / Debian
 * macOS (via Homebrew)
+* Steam Deck / SteamOS (static binaries to `~/.local/bin`, persists across OS updates)
 
 ## Role Variables
 

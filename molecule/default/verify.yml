@@ -22,14 +22,11 @@
     ansible.builtin.assert:
       that: init_lua.stat.exists
 
-  - name: Check NPM packages
-    become: true
-    community.general.npm:
-      name: neovim
-      global: true
-    check_mode: true
-    register: npm_packages
+  - name: Stat ~/.config/nvim/lua/conf/plugins/lsp.lua file
+    ansible.builtin.stat:
+      path: ~/.config/nvim/lua/conf/plugins/lsp.lua
+    register: lsp_lua
 
-  - name: Assert NPM packages installed
+  - name: Assert ~/.config/nvim/lua/conf/plugins/lsp.lua exists
     ansible.builtin.assert:
-      that: not npm_packages.changed
+      that: lsp_lua.stat.exists

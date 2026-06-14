@@ -1,0 +1,16 @@
+---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+driver:
+  name: docker
+platforms:
+  - name: steamdeck
+    image: jahrik/docker-archlinux-ansible
+    pre_build_image: true
+    pull: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
