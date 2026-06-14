@@ -61,7 +61,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip3 install ansible molecule
+        run: pip3 install ansible molecule molecule-plugins
 
       - name: Install collections
         run: ansible-galaxy collection install community.general
