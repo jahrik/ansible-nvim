@@ -17,6 +17,7 @@
     state: present
 
 - name: Install pynvim (macOS)
+  become: false
   ansible.builtin.pip:
     name: pynvim
     state: present
