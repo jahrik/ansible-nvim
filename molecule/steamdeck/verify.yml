@@ -43,12 +43,12 @@
         that: init_lua.stat.exists
         fail_msg: "~/.config/nvim/init.lua not found"
 
-    - name: Stat ~/.config/nvim/lua/conf/plugins/lsp.lua
+    - name: Stat ~/.config/nvim/lua/plugins/lsp.lua
       ansible.builtin.stat:
-        path: ~/.config/nvim/lua/conf/plugins/lsp.lua
+        path: ~/.config/nvim/lua/plugins/lsp.lua
       register: lsp_lua
 
     - name: Assert lsp.lua exists
       ansible.builtin.assert:
         that: lsp_lua.stat.exists
-        fail_msg: "~/.config/nvim/lua/conf/plugins/lsp.lua not found"
+        fail_msg: "~/.config/nvim/lua/plugins/lsp.lua not found"

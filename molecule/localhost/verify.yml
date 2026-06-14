@@ -4,13 +4,14 @@
   gather_facts: false
   tasks:
 
-  - name: Gather package facts
-    ansible.builtin.package_facts:
-      manager: auto
+  - name: Check nvim binary exists
+    ansible.builtin.command: which nvim
+    register: nvim_bin
+    changed_when: false
 
-  - name: Assert neovim package installed
+  - name: Assert nvim is installed
     ansible.builtin.assert:
-      that: "'neovim' in ansible_facts.packages"
+      that: nvim_bin.rc == 0
 
   - name: Stat ~/.config/nvim/init.lua file
     ansible.builtin.stat:
@@ -18,7 +19,6 @@
     register: init_lua
 
   - name: Assert ~/.config/nvim/init.lua exists
-    become: false
     ansible.builtin.assert:
       that: init_lua.stat.exists
 
@@ -39,3 +39,9 @@
   - name: Assert ~/.config/nvim/lua/plugins/lsp.lua exists
     ansible.builtin.assert:
       that: lsp_lua.stat.exists
+
+  - name: Verify nvim loads config without errors
+    ansible.builtin.command: nvim --headless -c "lua print('ok')" -c "qa"
+    register: nvim_check
+    changed_when: false
+    failed_when: nvim_check.rc != 0

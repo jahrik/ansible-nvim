@@ -94,11 +94,17 @@ jobs:
         working-directory: jahrik.nvim
         env:
           ANSIBLE_ROLES_PATH: ${{ github.workspace }}
-        run: ansible-playbook molecule/default/converge.yml -i "localhost," -c local
+        run: ansible-playbook molecule/localhost/converge.yml -i "localhost," -c local
+
+      - name: Run verify
+        working-directory: jahrik.nvim
+        env:
+          ANSIBLE_ROLES_PATH: ${{ github.workspace }}
+        run: ansible-playbook molecule/localhost/verify.yml -i "localhost," -c local
 
   release:
     name: Release
-    needs: [molecule]
+    needs: [molecule, macos]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
