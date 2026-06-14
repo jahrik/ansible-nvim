@@ -23,7 +23,7 @@
   ansible.builtin.package:
     name: neovim
     state: present
-  when: ansible_os_family != 'Darwin'
+  when: ansible_os_family == 'Archlinux'
 
 - name: Install NPM packages
   become: "{{ ansible_os_family != 'Darwin' }}"

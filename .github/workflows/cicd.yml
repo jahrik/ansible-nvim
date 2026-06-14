@@ -54,6 +54,8 @@ jobs:
     steps:
       - name: Check out the codebase
         uses: actions/checkout@v5
+        with:
+          path: jahrik.nvim
 
       - name: Set up Python 3
         uses: actions/setup-python@v6
@@ -61,13 +63,16 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip3 install ansible molecule molecule-plugins
+        run: pip3 install ansible
 
       - name: Install collections
         run: ansible-galaxy collection install community.general
 
-      - name: Run macOS molecule test
-        run: molecule test -s macos
+      - name: Run converge
+        working-directory: jahrik.nvim
+        env:
+          ANSIBLE_ROLES_PATH: ${{ github.workspace }}
+        run: ansible-playbook molecule/default/converge.yml -i "localhost," -c local
 
   release:
     name: Release

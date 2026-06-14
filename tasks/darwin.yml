@@ -1,14 +1,17 @@
 ---
 - name: Install requirements (macOS)
+  become: false
   community.general.homebrew:
     name:
       - fd
+      - fontconfig
       - node
       - ripgrep
       - unzip
     state: present
 
 - name: Install neovim (macOS)
+  become: false
   community.general.homebrew:
     name: neovim
     state: present

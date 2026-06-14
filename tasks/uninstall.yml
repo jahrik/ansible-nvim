@@ -1,5 +1,6 @@
 ---
 - name: Uninstall neovim (macOS)
+  become: false
   community.general.homebrew:
     name: neovim
     state: absent
