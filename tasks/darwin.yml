@@ -1,0 +1,24 @@
+---
+- name: Install requirements (macOS)
+  become: false
+  community.general.homebrew:
+    name:
+      - fd
+      - fontconfig
+      - node
+      - ripgrep
+      - unzip
+    state: present
+
+- name: Install neovim (macOS)
+  become: false
+  community.general.homebrew:
+    name: neovim
+    state: present
+
+- name: Install pynvim (macOS)
+  become: false
+  ansible.builtin.pip:
+    name: pynvim
+    state: present
+    executable: pip3

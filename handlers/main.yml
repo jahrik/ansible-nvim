@@ -1,10 +1,14 @@
 ---
 - name: Nvim packersync
   become: false
-  ansible.builtin.command: timeout 60 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-  ignore_errors: true
+  ansible.builtin.command: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+  timeout: 60
+  changed_when: true
+  failed_when: false
 
 - name: Fc-cache
   become: false
   ansible.builtin.command: fc-cache -f ~/.local/share/fonts/
-  ignore_errors: true
+  changed_when: true
+  failed_when: false
+  when: ansible_os_family != 'Darwin'

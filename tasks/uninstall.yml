@@ -1,10 +1,17 @@
 ---
+- name: Uninstall neovim (macOS)
+  become: false
+  community.general.homebrew:
+    name: neovim
+    state: absent
+  when: ansible_os_family == 'Darwin'
+
 - name: Uninstall neovim
   become: true
   ansible.builtin.package:
-    name:
-      - neovim
+    name: neovim
     state: absent
+  when: ansible_os_family != 'Darwin'
 
 - name: Destroy ~/.config/nvim directory
   become: false
