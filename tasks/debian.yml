@@ -15,12 +15,21 @@
     update_cache: true
     cache_valid_time: 3600
 
+- name: Check if neovim PPA keyring exists
+  become: true
+  ansible.builtin.stat:
+    path: /usr/share/keyrings/neovim-ppa.gpg
+  register: neovim_keyring
+
 - name: Download neovim PPA signing key
   become: true
+  vars:
+    neovim_ppa_key_id: "0x9DBB0BE9366964F134855E2255F96FCF8231B6DD"
   ansible.builtin.get_url:
-    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9DBB0BE9366964F134855E2255F96FCF8231B6DD"
+    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ neovim_ppa_key_id }}"
     dest: /usr/share/keyrings/neovim-ppa.asc
     mode: "0644"
+  when: not neovim_keyring.stat.exists
 
 - name: Dearmor neovim PPA signing key
   become: true
