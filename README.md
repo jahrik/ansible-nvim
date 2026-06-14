@@ -4,15 +4,11 @@
 
 Installs neovim and configures it with Lua.
 
-Uses [packer](https://github.com/wbthomason/packer.nvim) for plugins management. Bootstraps packer, if it's not already installed.
+Uses [packer](https://github.com/wbthomason/packer.nvim) for plugin management. Bootstraps packer if it's not already installed.
 
-Installs [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip) to
-
-    ~/.local/share/fonts
+Installs [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip) to `~/.local/share/fonts`.
 
 ## Plugins
-
-The following plugins are installed and configured
 
 * nvim-telescope
 * nightfox
@@ -30,15 +26,15 @@ The following plugins are installed and configured
 
 ## OS Support
 
-* Arch
-
-* Ubuntu
+* Arch Linux
+* Ubuntu / Debian
+* macOS (via Homebrew)
 
 ## Role Variables
 
-Install or uninstall and cleanup directories and packages
-
-    install: true
+| Variable | Default | Description |
+|---|---|---|
+| `install` | `true` | Set to `false` to uninstall neovim and remove `~/.config/nvim` |
 
 ## Dependencies
 
@@ -46,12 +42,14 @@ None
 
 ## Example Playbook
 
-    - hosts: all
-      become: true
-      vars:
-        install: true
-      roles:
-        - jahrik.nvim
+```yaml
+- hosts: all
+  become: true
+  vars:
+    install: true
+  roles:
+    - jahrik.nvim
+```
 
 ## Testing
 
