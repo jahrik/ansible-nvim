@@ -13,7 +13,7 @@
   community.general.homebrew:
     name: neovim
     state: absent
-  when: ansible_os_family == 'Darwin'
+  when: ansible_facts['os_family'] == 'Darwin'
 
 - name: Remove neovim tarball binary (Steam Deck)
   become: false
@@ -31,7 +31,7 @@
   ansible.builtin.package:
     name: neovim
     state: absent
-  when: ansible_os_family != 'Darwin' and not is_steamdeck
+  when: ansible_facts['os_family'] != 'Darwin' and not is_steamdeck
 
 - name: Destroy ~/.config/nvim directory
   become: false

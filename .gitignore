@@ -1,1 +1,4 @@
 .ansible/
+.venv/
+*.log
+uv.lock

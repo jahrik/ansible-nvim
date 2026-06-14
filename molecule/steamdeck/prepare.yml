@@ -2,6 +2,13 @@
 - name: Prepare
   hosts: all
   tasks:
+    - name: Disable pacman internal sandbox
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/pacman.conf
+        line: "DisableSandbox"
+        insertafter: "^\\[options\\]"
+
     - name: Install prerequisites (curl, unzip)
       become: true
       community.general.pacman:

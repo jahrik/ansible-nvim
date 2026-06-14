@@ -1,0 +1,47 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+
+  - name: Check nvim binary exists
+    ansible.builtin.command: which nvim
+    register: nvim_bin
+    changed_when: false
+
+  - name: Assert nvim is installed
+    ansible.builtin.assert:
+      that: nvim_bin.rc == 0
+
+  - name: Stat ~/.config/nvim/init.lua file
+    ansible.builtin.stat:
+      path: ~/.config/nvim/init.lua
+    register: init_lua
+
+  - name: Assert ~/.config/nvim/init.lua exists
+    ansible.builtin.assert:
+      that: init_lua.stat.exists
+
+  - name: Stat ~/.config/nvim/lua/core/lazy.lua file
+    ansible.builtin.stat:
+      path: ~/.config/nvim/lua/core/lazy.lua
+    register: lazy_lua
+
+  - name: Assert ~/.config/nvim/lua/core/lazy.lua exists
+    ansible.builtin.assert:
+      that: lazy_lua.stat.exists
+
+  - name: Stat ~/.config/nvim/lua/plugins/lsp.lua file
+    ansible.builtin.stat:
+      path: ~/.config/nvim/lua/plugins/lsp.lua
+    register: lsp_lua
+
+  - name: Assert ~/.config/nvim/lua/plugins/lsp.lua exists
+    ansible.builtin.assert:
+      that: lsp_lua.stat.exists
+
+  - name: Verify nvim loads config without errors
+    ansible.builtin.command: nvim --headless -c "lua print('ok')" -c "qa"
+    register: nvim_check
+    changed_when: false
+    failed_when: nvim_check.rc != 0

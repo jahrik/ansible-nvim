@@ -1,7 +1,0 @@
--- vim-test keymaps (uncomment to enable)
--- local map = require('conf.utils').map
--- map('n', '<leader>tn', ':TestNearest<cr>')
--- map('n', '<leader>tf', ':TestFile<cr>')
--- map('n', '<leader>ts', ':TestSuite<cr>')
--- map('n', '<leader>tl', ':TestLast<cr>')
--- map('n', '<leader>tv', ':TestVisit<cr>')

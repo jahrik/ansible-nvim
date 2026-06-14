@@ -22,11 +22,58 @@
     ansible.builtin.assert:
       that: init_lua.stat.exists
 
-  - name: Stat ~/.config/nvim/lua/conf/plugins/lsp.lua file
+  - name: Stat ~/.config/nvim/lua/core/lazy.lua file
     ansible.builtin.stat:
-      path: ~/.config/nvim/lua/conf/plugins/lsp.lua
+      path: ~/.config/nvim/lua/core/lazy.lua
+    register: lazy_lua
+
+  - name: Assert ~/.config/nvim/lua/core/lazy.lua exists
+    ansible.builtin.assert:
+      that: lazy_lua.stat.exists
+
+  - name: Stat ~/.config/nvim/lua/plugins/lsp.lua file
+    ansible.builtin.stat:
+      path: ~/.config/nvim/lua/plugins/lsp.lua
     register: lsp_lua
 
-  - name: Assert ~/.config/nvim/lua/conf/plugins/lsp.lua exists
+  - name: Assert ~/.config/nvim/lua/plugins/lsp.lua exists
     ansible.builtin.assert:
       that: lsp_lua.stat.exists
+
+  - name: Verify nvim binary runs
+    become: false
+    ansible.builtin.command: nvim --version
+    register: nvim_version
+    changed_when: false
+
+  - name: Assert nvim version output
+    ansible.builtin.assert:
+      that: "'NVIM' in nvim_version.stdout"
+
+  - name: Verify core lua files parse without syntax errors
+    become: false
+    ansible.builtin.command: >
+      nvim --headless -u NONE -c
+      'lua local files={"core/options","core/keymaps","core/autocmds","core/lazy"};
+      for _,f in ipairs(files) do
+      local ok,err=loadfile(vim.fn.expand("~/.config/nvim/lua/"..f..".lua"));
+      if not ok then io.write(err); vim.cmd("cq") end end;
+      io.write("ok")' -c 'qa'
+    register: nvim_lua_check
+    changed_when: false
+
+  - name: Assert core lua files have no syntax errors
+    ansible.builtin.assert:
+      that: "nvim_lua_check.stdout == 'ok'"
+
+  - name: Run lazy.nvim plugin sync
+    become: false
+    ansible.builtin.shell: |
+      timeout 120 nvim --headless "+Lazy! sync" "+sleep 90" "+qa" >/dev/null 2>&1
+      nvim --headless -c 'lua io.write(tostring(#require("lazy").plugins()))' -c 'qa' 2>/dev/null
+    register: lazy_sync
+    changed_when: false
+
+  - name: Assert lazy.nvim installed plugins
+    ansible.builtin.assert:
+      that: "lazy_sync.stdout | int > 30"
