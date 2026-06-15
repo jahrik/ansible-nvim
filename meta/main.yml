@@ -2,13 +2,15 @@ galaxy_info:
   role_name: nvim
   author: jahrik
   namespace: jahrik
-  description: Install nvim, packer, plugins, and configs
-  company: https://homelab.business
-  issue_tracker_url: https://github.com/jahrik/ansible-vim/issues
+  description: Install Neovim with a full Lua config managed by lazy.nvim
+  issue_tracker_url: https://github.com/jahrik/ansible-nvim/issues
   license: GPLv2
-  min_ansible_version: "2.9"
+  min_ansible_version: "2.15"
   platforms:
     - name: ArchLinux
+      versions:
+        - all
+    - name: Debian
       versions:
         - all
     - name: Ubuntu
@@ -18,7 +20,13 @@ galaxy_info:
     - name: macOS
       versions:
         - all
+    - name: GenericLinux
+      versions:
+        - all
   galaxy_tags:
     - nvim
     - neovim
+    - lazy
+    - lsp
+    - python
 dependencies: []
