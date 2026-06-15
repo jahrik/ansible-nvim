@@ -11,47 +11,9 @@
 - name: Include OS specific tasks
   ansible.builtin.include_tasks: "{{ 'steamdeck' if is_steamdeck else ansible_facts['os_family'] | lower }}.yml"
 
-- name: Create ~/.config/nvim directories
-  become: false
-  ansible.builtin.file:
-    path: "~/.config/{{ item }}"
-    state: directory
-    mode: "0755"
-    recurse: true
-  loop:
-    - nvim/lua/core
-    - nvim/lua/plugins
-
-- name: Generate nvim config files
+- name: Deploy nvim configuration
   become: false
   ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "~/.config/nvim/{{ item }}"
+    src: files/
+    dest: "~/.config/nvim/"
     mode: "0755"
-  loop:
-    - init.lua
-    - lua/core/autocmds.lua
-    - lua/core/keymaps.lua
-    - lua/core/lazy.lua
-    - lua/core/options.lua
-    - lua/plugins/blink.lua
-    - lua/plugins/claude.lua
-    - lua/plugins/colorscheme.lua
-    - lua/plugins/conform.lua
-    - lua/plugins/copilot.lua
-    - lua/plugins/dadbod.lua
-    - lua/plugins/dap.lua
-    - lua/plugins/gitsigns.lua
-    - lua/plugins/indent_line.lua
-    - lua/plugins/lazydev.lua
-    - lua/plugins/lazygit.lua
-    - lua/plugins/lint.lua
-    - lua/plugins/lsp.lua
-    - lua/plugins/mini.lua
-    - lua/plugins/neo-tree.lua
-    - lua/plugins/neotest.lua
-    - lua/plugins/telescope.lua
-    - lua/plugins/todo_comments.lua
-    - lua/plugins/trouble.lua
-    - lua/plugins/venv_selector.lua
-    - lua/plugins/which_key.lua

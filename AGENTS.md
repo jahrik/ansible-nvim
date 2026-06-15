@@ -6,53 +6,70 @@ Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration
 
 | Variable | Default | Description |
 |---|---|---|
-| `install` | `true` | Set to `false` to uninstall Neovim and remove `~/.config/nvim` |
+| `install` | `true` | Set to `false` to uninstall Neovim and remove `~/.config/nvim` and `~/.local/share/nvim` |
 
 ## Task Flow
 
-`tasks/main.yml` → `install.yml` or `uninstall.yml` based on `install | bool`
+`tasks/main.yml` -> `install.yml` or `uninstall.yml` based on `install | bool`
 
 **install.yml:**
-1. Stat `/etc/steamos-release` → set `is_steamdeck` fact
+1. Stat `/etc/steamos-release` -> set `is_steamdeck` fact
 2. Include OS-specific tasks: `steamdeck.yml`, `archlinux.yml`, `debian.yml`, or `darwin.yml`
 3. Create `~/.local/share/fonts`, download DejaVu Nerd Fonts, notify `Fc-cache` handler
-4. Install `neovim` package (Arch only — other OS tasks own their install)
-5. Create `~/.config/nvim/lua/conf/plugins/` directory tree
-6. Copy all Lua config files (`init.lua`, `lua/conf/*.lua`, `lua/conf/plugins/*.lua`)
+4. Recursive copy of `files/` to `~/.config/nvim/` (new plugins deploy without task edits)
 
-**archlinux.yml:** pacman installs fd, fontconfig, ripgrep, unzip
+**archlinux.yml:** pacman installs fd, fontconfig, ripgrep, unzip, tree-sitter
 
-**debian.yml:** apt installs fd-find, fontconfig, ripgrep, unzip, curl, git, neovim
+**debian.yml:** apt installs fd-find, fontconfig, ripgrep, unzip, curl, git, neovim (via neovim-ppa/unstable for 0.10+), tree-sitter binary
 
-**darwin.yml:** Homebrew installs fd, fontconfig, ripgrep, unzip, neovim (`become: false` throughout)
+**darwin.yml:** Homebrew installs fd, fontconfig, ripgrep, unzip, neovim, tree-sitter (`become: false` throughout)
 
 **steamdeck.yml:** All tasks run without `become` (SteamOS has a read-only root).
 - Downloads `nvim-linux-x86_64.tar.gz` to `~/.local/`
-- Resolves ripgrep and fd latest releases via GitHub API, extracts musl static binaries to `~/.local/bin/`
-- Uses `creates:` guards for idempotency — delete a binary to force upgrade
+- Resolves ripgrep, fd, and tree-sitter latest releases via GitHub API, extracts musl static binaries to `~/.local/bin/`
+- Uses `creates:` guards for idempotency
 
-**uninstall.yml:** Removes neovim (homebrew on Darwin, tarball files on Steam Deck, package module on Linux) and `~/.config/nvim/`
+**uninstall.yml:** Removes neovim (homebrew on Darwin, tarball files on Steam Deck, package module on Linux) and `~/.config/nvim/` and `~/.local/share/nvim/`
 
 ## Config Structure
 
 ```
 ~/.config/nvim/
-├── init.lua                    # Loads conf.set, conf.remap, conf.plugins
-└── lua/conf/
-    ├── set.lua                 # Vim options
-    ├── remap.lua               # Key remappings
-    ├── utils.lua               # map() helper
-    ├── plugins.lua             # lazy.nvim bootstrap + plugin specs
-    └── plugins/                # Per-plugin config files
-        ├── colors.lua          # nightfox + terafox colorscheme
-        ├── filetype.lua        # filetype.nvim overrides
-        ├── lsp.lua             # lsp-zero v4 + nvim-cmp + mason
-        ├── nvimtree.lua        # nvim-tree setup
-        ├── telescope.lua       # telescope keymaps
-        └── test.lua            # vim-test keymaps (commented out)
+├── init.lua              # Entry point: leader, nerd font flag, requires
+└── lua/
+    ├── core/
+    │   ├── autocmds.lua  # Autocommands (yank highlight, etc.)
+    │   ├── keymaps.lua   # Core keymaps (split nav, terminal escape)
+    │   ├── lazy.lua      # lazy.nvim bootstrap and setup
+    │   └── options.lua   # Vim options (tabs, search, UI, undo)
+    └── plugins/          # One file per plugin (auto-imported by lazy.nvim)
+        ├── blink.lua
+        ├── codecompanion.lua
+        ├── colorscheme.lua
+        ├── conform.lua
+        ├── copilot.lua
+        ├── csvview.lua
+        ├── dadbod.lua
+        ├── gitsigns.lua
+        ├── indent_line.lua
+        ├── iron.lua
+        ├── lazydev.lua
+        ├── lazygit.lua
+        ├── lint.lua
+        ├── lsp.lua
+        ├── mini.lua
+        ├── neo-tree.lua
+        ├── neotest.lua
+        ├── overseer.lua
+        ├── render-markdown.lua
+        ├── telescope.lua
+        ├── todo_comments.lua
+        ├── trouble.lua
+        ├── venv_selector.lua
+        └── which_key.lua
 ```
 
-Each plugin's config is `require()`d from its lazy.nvim `config` callback — guarantees correct load order without relying on `after/plugin/` auto-sourcing.
+Each plugin is a self-contained spec returned from its file. lazy.nvim auto-imports everything in `plugins/`.
 
 ## Testing
 
@@ -63,6 +80,13 @@ molecule test
 molecule test -s steamdeck
 molecule converge
 molecule destroy
+```
+
+Localhost scenario (used in CI on the macOS GitHub Actions runner):
+
+```bash
+molecule converge -s localhost
+molecule verify -s localhost
 ```
 
 ## CI

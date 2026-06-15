@@ -1,7 +1,7 @@
 return {
 	"saghen/blink.cmp",
 	event = "VimEnter",
-	version = "1.0.0",
+	version = "1.*",
 	main = "blink.cmp",
 
 	dependencies = {
