@@ -8,7 +8,6 @@ return {
 		require("neotest").setup({
 			adapters = {
 				require("neotest-python")({
-					dap = { justMyCode = false },
 					args = { "--maxfail=1" },
 					runner = "pytest",
 				}),

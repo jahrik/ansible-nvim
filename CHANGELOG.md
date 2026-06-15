@@ -2,6 +2,32 @@
 
 All notable changes to this role will be documented in this file.
 
+## 2026-06-15
+
+### Added
+
+- iron.nvim: Interactive REPL manager (send code to ipython/python, cell-based workflow with `# %%` markers)
+- csvview.nvim: Tabular CSV/TSV viewing with sticky headers and auto-delimiter detection
+- overseer.nvim: Task runner for dbt, pytest, and shell commands with output capture
+- render-markdown.nvim: Rich in-buffer markdown rendering (headings, tables, code blocks, checkboxes)
+- codecompanion.nvim: Multi-turn AI chat via Copilot adapter (inline transforms, explain, refactor)
+- `docs/keybindings.md`: Complete keybinding reference
+- `docs/plugins.md`: Plugin usage guide with tips
+- `docs/workflows.md`: Step-by-step guides for common tasks (data exploration, debugging, dbt, git, AI)
+- which-key groups: AI (`<leader>a`), REPL (`<leader>r`), Overseer (`<leader>o`), Markdown (`<leader>m`)
+
+### Removed
+
+- claude-code.nvim: Redundant with terminal Claude Code usage
+- nvim-dap (and nvim-dap-python, nvim-dap-ui, nvim-dap-virtual-text, mason-nvim-dap): Not currently used, will revisit later
+- neotest DAP integration config (dead reference without DAP installed)
+
+### Changed
+
+- blink.cmp version pin from `1.0.0` to `1.*` (gets v1.10.2: 3x perf, better fuzzy matching, nvim 0.12 compat)
+- Ansible deploy: replaced explicit file loop with recursive `copy src: files/` (new plugins deploy without task edits)
+- README: moved keybinding tables to `docs/keybindings.md`, added Documentation section with links
+
 ## 2026-06-14
 
 ### Added

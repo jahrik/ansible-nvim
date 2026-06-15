@@ -4,6 +4,12 @@
 
 Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration to `~/.config/nvim/`. Manages plugins with [lazy.nvim](https://github.com/folke/lazy.nvim), sets up LSP with Mason, and installs [DejaVu Sans Mono Nerd Font](https://github.com/ryanoasis/nerd-fonts) for icon support.
 
+## Documentation
+
+- [Keybindings Reference](docs/keybindings.md) - Complete keymap listing grouped by function
+- [Plugin Guide](docs/plugins.md) - How to use each plugin with tips and details
+- [Workflows](docs/workflows.md) - Step-by-step guides for common tasks (data exploration, debugging, dbt, git, AI)
+
 ## OS Support
 
 | Platform | Install method |
@@ -28,14 +34,15 @@ Steam Deck is detected automatically via `/etc/steamos-release`. Because SteamOS
     │   └── options.lua   # Vim options (tabs, search, UI, undo)
     └── plugins/          # One file per plugin (auto-imported by lazy.nvim)
         ├── blink.lua
-        ├── claude.lua
+        ├── codecompanion.lua
         ├── colorscheme.lua
         ├── conform.lua
         ├── copilot.lua
+        ├── csvview.lua
         ├── dadbod.lua
-        ├── dap.lua
         ├── gitsigns.lua
         ├── indent_line.lua
+        ├── iron.lua
         ├── lazydev.lua
         ├── lazygit.lua
         ├── lint.lua
@@ -43,6 +50,8 @@ Steam Deck is detected automatically via `/etc/steamos-release`. Because SteamOS
         ├── mini.lua
         ├── neo-tree.lua
         ├── neotest.lua
+        ├── overseer.lua
+        ├── render-markdown.lua
         ├── telescope.lua
         ├── todo_comments.lua
         ├── trouble.lua
@@ -109,16 +118,12 @@ Configured LSP servers (auto-installed via Mason):
 
 Formatters by filetype: `stylua` (Lua), `isort` + `ruff` (Python), `sqlfluff` (SQL), `prettier` (Markdown).
 
-### Testing and Debugging
+### Testing
 
 | Plugin | Purpose |
 |---|---|
 | [neotest](https://github.com/nvim-neotest/neotest) | Test runner framework |
 | [neotest-python](https://github.com/nvim-neotest/neotest-python) | Pytest adapter for neotest |
-| [nvim-dap](https://github.com/mfussenegger/nvim-dap) | Debug Adapter Protocol client |
-| [nvim-dap-python](https://github.com/mfussenegger/nvim-dap-python) | Python debugger (debugpy) |
-| [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui) | DAP UI (scopes, breakpoints, REPL) |
-| [nvim-dap-virtual-text](https://github.com/theHamsta/nvim-dap-virtual-text) | Inline variable display while debugging |
 
 ### Git
 
@@ -132,7 +137,7 @@ Formatters by filetype: `stylua` (Lua), `isort` + `ruff` (Python), `sqlfluff` (S
 | Plugin | Purpose |
 |---|---|
 | [copilot.lua](https://github.com/zbirenbaum/copilot.lua) | GitHub Copilot inline suggestions |
-| [claude-code.nvim](https://github.com/greggh/claude-code.nvim) | Claude Code integration |
+| [codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) | Multi-turn AI chat via Copilot (inline transforms, explain, refactor) |
 
 ### Editing
 
@@ -150,6 +155,20 @@ Formatters by filetype: `stylua` (Lua), `isort` + `ruff` (Python), `sqlfluff` (S
 | [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) | UI for dadbod |
 | [vim-dadbod-completion](https://github.com/kristijanhusak/vim-dadbod-completion) | SQL completion via blink.cmp |
 
+### REPL and Data
+
+| Plugin | Purpose |
+|---|---|
+| [iron.nvim](https://github.com/Vigemus/iron.nvim) | REPL manager (send code to ipython/python) |
+| [csvview.nvim](https://github.com/hat0uma/csvview.nvim) | Tabular CSV/TSV viewing with sticky headers |
+| [overseer.nvim](https://github.com/stevearc/overseer.nvim) | Task runner (dbt, pytest, shell commands) |
+
+### Markdown
+
+| Plugin | Purpose |
+|---|---|
+| [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) | Rich in-buffer markdown rendering |
+
 ### Python
 
 | Plugin | Purpose |
@@ -158,119 +177,9 @@ Formatters by filetype: `stylua` (Lua), `isort` + `ruff` (Python), `sqlfluff` (S
 
 ## Key Bindings
 
-Leader key is `<Space>`.
+Leader key is `<Space>`. Press `<Space>` and wait to see all available groups via which-key.
 
-### General
-
-| Key | Action |
-|---|---|
-| `<Esc>` | Clear search highlight |
-| `<C-h/j/k/l>` | Navigate splits |
-| `<leader>f` | Format buffer |
-| `\` | Toggle Neo-tree |
-| `<leader><leader>` | Find buffers |
-| `<leader>/` | Fuzzy search current buffer |
-
-### Search (Telescope)
-
-| Key | Action |
-|---|---|
-| `<leader>sf` | Find files |
-| `<leader>sg` | Live grep |
-| `<leader>sh` | Help tags |
-| `<leader>sk` | Keymaps |
-| `<leader>sd` | Diagnostics |
-| `<leader>sr` | Resume last search |
-| `<leader>s.` | Recent files |
-| `<leader>s/` | Grep open files |
-| `<leader>sn` | Search Neovim config files |
-| `<leader>ss` | Telescope builtins |
-| `<leader>sw` | Grep current word |
-
-### LSP
-
-| Key | Action |
-|---|---|
-| `grd` | Go to definition |
-| `grD` | Go to declaration |
-| `gri` | Go to implementation |
-| `grr` | Go to references |
-| `grt` | Go to type definition |
-| `gO` | Document symbols |
-| `gW` | Workspace symbols |
-| `grn` | Rename |
-| `gra` | Code action |
-| `<leader>th` | Toggle inlay hints |
-
-### Testing
-
-| Key | Action |
-|---|---|
-| `<leader>nt` | Run nearest test |
-| `<leader>nf` | Run tests in file |
-| `<leader>ns` | Toggle test summary |
-| `<leader>nl` | Run last test |
-
-### Debugging
-
-| Key | Action |
-|---|---|
-| `<leader>dd` | Start / Continue |
-| `<leader>di` | Step into |
-| `<leader>do` | Step over |
-| `<leader>du` | Step out |
-| `<leader>db` | Toggle breakpoint |
-| `<leader>dB` | Conditional breakpoint |
-| `<leader>dui` | Toggle DAP UI |
-| `<leader>dr` | Toggle REPL |
-| `<leader>dx` | Terminate debugger |
-
-### Git
-
-| Key | Action |
-|---|---|
-| `<leader>hs` | Stage hunk |
-| `<leader>hr` | Reset hunk |
-| `<leader>hS` | Stage buffer |
-| `<leader>hu` | Undo stage hunk |
-| `<leader>hR` | Reset buffer |
-| `<leader>hp` | Preview hunk |
-| `<leader>hb` | Blame line |
-| `<leader>hd` | Diff against index |
-| `<leader>hD` | Diff against last commit |
-| `<leader>tb` | Toggle git blame line |
-| `<leader>tD` | Toggle show deleted |
-| `<leader>lg` | Open LazyGit |
-| `]c` / `[c` | Next/previous git change |
-
-### Diagnostics (Trouble)
-
-| Key | Action |
-|---|---|
-| `<leader>q` | Toggle diagnostics |
-| `<leader>Q` | Buffer diagnostics |
-| `<leader>xS` | Symbols |
-| `<leader>xL` | Location list |
-| `<leader>xQ` | Quickfix list |
-| `<leader>xt` | TODOs |
-
-### Database
-
-| Key | Action |
-|---|---|
-| `<leader>Du` | Toggle DB UI |
-| `<leader>Da` | Add DB connection |
-| `<leader>Df` | Find DB buffer |
-
-### Copilot
-
-| Key | Action |
-|---|---|
-| `<M-y>` | Accept suggestion |
-| `<M-n>` / `<M-p>` | Next/previous suggestion |
-| `<leader>ce` / `<leader>cd` | Enable/disable Copilot |
-| `<leader>cs` | Copilot status |
-| `<leader>cp` | Copilot panel |
+See [docs/keybindings.md](docs/keybindings.md) for the complete reference.
 
 ## Requirements
 
