@@ -3,8 +3,8 @@ return {
 	version = "*",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"nvim-tree/nvim-web-devicons", -- icons
 		"MunifTanjim/nui.nvim",
+		"echasnovski/mini.nvim",
 	},
 	lazy = false,
 
@@ -34,7 +34,16 @@ return {
 
 		default_component_configs = {
 			indent = { with_expanders = true }, -- nicer folding arrows
-			icon = { folder_closed = "", folder_open = "", default = "" },
+			icon = {
+				folder_closed = "",
+				folder_open = "",
+				default = "",
+				provider = function(icon, node)
+					if node.type == "file" then
+						icon.text, icon.highlight = require("mini.icons").get("file", node.name)
+					end
+				end,
+			},
 			git_status = {
 				symbols = {
 					added = "",

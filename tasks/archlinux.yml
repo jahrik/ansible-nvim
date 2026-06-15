@@ -8,6 +8,7 @@
       - fontconfig
       - neovim
       - ripgrep
+      - tree-sitter-cli
       - unzip
     state: present
 
@@ -21,8 +22,8 @@
 - name: Download Nerd Fonts (dejavu-sans-mono-nerdfonts)
   become: false
   ansible.builtin.unarchive:
-    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DejaVuSansMono.zip
     dest: ~/.local/share/fonts
     remote_src: true
-    creates: '~/.local/share/fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf'
+    creates: '~/.local/share/fonts/DejaVuSansMNerdFontMono-Regular.ttf'
   notify: Fc-cache

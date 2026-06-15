@@ -57,6 +57,26 @@
     creates: ~/.local/bin/rg
   when: not rg_stat.stat.exists
 
+- name: Check if tree-sitter binary exists
+  become: false
+  ansible.builtin.stat:
+    path: ~/.local/bin/tree-sitter
+  register: tree_sitter_stat
+
+- name: Download tree-sitter CLI
+  become: false
+  ansible.builtin.get_url:
+    url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz
+    dest: /tmp/tree-sitter.gz
+    mode: "0644"
+  when: not tree_sitter_stat.stat.exists
+
+- name: Install tree-sitter CLI
+  become: false
+  ansible.builtin.shell: gunzip -c /tmp/tree-sitter.gz > ~/.local/bin/tree-sitter && chmod 755 ~/.local/bin/tree-sitter
+  args:
+    creates: ~/.local/bin/tree-sitter
+
 - name: Check if fd binary exists
   become: false
   ansible.builtin.stat:

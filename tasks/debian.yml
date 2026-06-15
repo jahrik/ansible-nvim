@@ -39,9 +39,14 @@
 
 - name: Add neovim PPA repository
   become: true
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/neovim-ppa.gpg] https://ppa.launchpadcontent.net/neovim-ppa/unstable/ubuntu {{ ansible_distribution_release }} main"
-    filename: neovim-ppa
+  ansible.builtin.deb822_repository:
+    name: neovim-ppa
+    types: deb
+    uris: "https://ppa.launchpadcontent.net/neovim-ppa/unstable/ubuntu"
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: main
+    signed_by: /usr/share/keyrings/neovim-ppa.gpg
+    install_python_debian: true
     state: present
 
 - name: Install neovim
@@ -50,6 +55,26 @@
     name: neovim
     state: present
     update_cache: true
+
+- name: Check if tree-sitter binary exists
+  become: false
+  ansible.builtin.stat:
+    path: /usr/local/bin/tree-sitter
+  register: tree_sitter_stat
+
+- name: Download tree-sitter CLI
+  become: true
+  ansible.builtin.get_url:
+    url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz
+    dest: /tmp/tree-sitter.gz
+    mode: "0644"
+  when: not tree_sitter_stat.stat.exists
+
+- name: Install tree-sitter CLI
+  become: true
+  ansible.builtin.shell: gunzip -c /tmp/tree-sitter.gz > /usr/local/bin/tree-sitter && chmod 755 /usr/local/bin/tree-sitter
+  args:
+    creates: /usr/local/bin/tree-sitter
 
 - name: Create ~/.local/share/fonts directory
   become: false
@@ -61,8 +86,8 @@
 - name: Download Nerd Fonts (dejavu-sans-mono-nerdfonts)
   become: false
   ansible.builtin.unarchive:
-    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DejaVuSansMono.zip
     dest: ~/.local/share/fonts
     remote_src: true
-    creates: '~/.local/share/fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf'
+    creates: '~/.local/share/fonts/DejaVuSansMNerdFontMono-Regular.ttf'
   notify: Fc-cache

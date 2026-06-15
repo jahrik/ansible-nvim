@@ -34,7 +34,6 @@
     - lua/core/keymaps.lua
     - lua/core/lazy.lua
     - lua/core/options.lua
-    - lua/plugins/autopairs.lua
     - lua/plugins/blink.lua
     - lua/plugins/claude.lua
     - lua/plugins/colorscheme.lua
@@ -53,7 +52,6 @@
     - lua/plugins/neotest.lua
     - lua/plugins/telescope.lua
     - lua/plugins/todo_comments.lua
-    - lua/plugins/treesitter.lua
     - lua/plugins/trouble.lua
     - lua/plugins/venv_selector.lua
     - lua/plugins/which_key.lua
