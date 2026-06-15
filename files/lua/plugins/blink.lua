@@ -22,7 +22,6 @@ return {
 		"folke/lazydev.nvim",
 	},
 
-	---@type blink.cmp.Config
 	opts = {
 		keymap = {
 			-- Use Blink's default mappings:
@@ -59,5 +58,4 @@ return {
 		-- Inline function signature help
 		signature = { enabled = true },
 	},
-
 }

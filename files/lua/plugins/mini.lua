@@ -38,24 +38,25 @@ return {
 			callback = function(ev)
 				local buf = ev.buf
 				vim.keymap.set("n", "j", function()
-					MiniStarter.update_current_item("next")
+					starter.update_current_item("next")
 				end, { buffer = buf })
 				vim.keymap.set("n", "k", function()
-					MiniStarter.update_current_item("prev")
+					starter.update_current_item("prev")
 				end, { buffer = buf })
 				vim.keymap.set("n", "\\", function()
-					MiniStarter.close()
+					starter.close()
 					vim.cmd("Neotree toggle")
 				end, { buffer = buf })
 			end,
 		})
 		require("mini.ai").setup({ n_lines = 500 })
-		require("mini.icons").setup({
+		local icons = require("mini.icons")
+		icons.setup({
 			filetype = {
 				yaml = { glyph = "", hl = "MiniIconsPurple" },
 			},
 		})
-		MiniIcons.mock_nvim_web_devicons()
+		icons.mock_nvim_web_devicons()
 		require("mini.pairs").setup()
 		require("mini.surround").setup()
 
