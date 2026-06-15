@@ -13,7 +13,9 @@ return {
 	opts = {
 		view = {
 			display_mode = "border",
-			sticky_header = true,
+			sticky_header = {
+				enabled = true,
+			},
 		},
 		parser = {
 			async_chunksize = 50,
