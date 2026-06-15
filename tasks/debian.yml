@@ -9,6 +9,7 @@
       - fontconfig
       - git
       - gpg
+      - python3-debian
       - ripgrep
       - unzip
     state: present
@@ -46,7 +47,6 @@
     suites: "{{ ansible_facts['distribution_release'] }}"
     components: main
     signed_by: /usr/share/keyrings/neovim-ppa.gpg
-    install_python_debian: true
     state: present
 
 - name: Install neovim
