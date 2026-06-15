@@ -38,3 +38,9 @@
   ansible.builtin.file:
     path: ~/.config/nvim
     state: absent
+
+- name: Destroy ~/.local/share/nvim directory
+  become: false
+  ansible.builtin.file:
+    path: ~/.local/share/nvim
+    state: absent

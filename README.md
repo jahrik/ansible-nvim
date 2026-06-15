@@ -27,7 +27,6 @@ Steam Deck is detected automatically via `/etc/steamos-release`. Because SteamOS
     │   ├── lazy.lua      # lazy.nvim bootstrap and setup
     │   └── options.lua   # Vim options (tabs, search, UI, undo)
     └── plugins/          # One file per plugin (auto-imported by lazy.nvim)
-        ├── autopairs.lua
         ├── blink.lua
         ├── claude.lua
         ├── colorscheme.lua
@@ -46,7 +45,6 @@ Steam Deck is detected automatically via `/etc/steamos-release`. Because SteamOS
         ├── neotest.lua
         ├── telescope.lua
         ├── todo_comments.lua
-        ├── treesitter.lua
         ├── trouble.lua
         ├── venv_selector.lua
         └── which_key.lua
@@ -61,10 +59,11 @@ Plugin management uses [lazy.nvim](https://github.com/folke/lazy.nvim), which bo
 | Plugin | Purpose |
 |---|---|
 | [catppuccin](https://github.com/catppuccin/nvim) | Colorscheme (mocha flavour) |
+| [mini.starter](https://github.com/echasnovski/mini.nvim) | Start screen with actions and recent files |
 | [mini.statusline](https://github.com/echasnovski/mini.nvim) | Lightweight status line |
+| [mini.icons](https://github.com/echasnovski/mini.nvim) | File type icons (replaces nvim-web-devicons) |
 | [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) | File explorer sidebar |
 | [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Indentation guides |
-| [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) | File type icons (requires Nerd Font) |
 | [which-key.nvim](https://github.com/folke/which-key.nvim) | Popup showing available keybindings |
 | [trouble.nvim](https://github.com/folke/trouble.nvim) | Diagnostics list |
 | [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) | Highlight TODO/FIXME/NOTE in comments |
@@ -97,6 +96,7 @@ Configured LSP servers (auto-installed via Mason):
 - `basedpyright` - Python type checking
 - `ruff` - Python linting/formatting
 - `lua_ls` - Lua
+- `marksman` - Markdown
 - `taplo` - TOML
 - `yamlls` - YAML (with SchemaStore)
 
@@ -139,9 +139,8 @@ Formatters by filetype: `stylua` (Lua), `isort` + `ruff` (Python), `sqlfluff` (S
 | Plugin | Purpose |
 |---|---|
 | [mini.ai](https://github.com/echasnovski/mini.nvim) | Enhanced around/inside text objects |
+| [mini.pairs](https://github.com/echasnovski/mini.nvim) | Auto-close brackets and quotes |
 | [mini.surround](https://github.com/echasnovski/mini.nvim) | Add/delete/replace surroundings |
-| [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets and quotes |
-| [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting and indentation |
 
 ### Database
 
@@ -207,10 +206,10 @@ Leader key is `<Space>`.
 
 | Key | Action |
 |---|---|
-| `<leader>tt` | Run nearest test |
-| `<leader>tf` | Run tests in file |
-| `<leader>ts` | Toggle test summary |
-| `<leader>tl` | Run last test |
+| `<leader>nt` | Run nearest test |
+| `<leader>nf` | Run tests in file |
+| `<leader>ns` | Toggle test summary |
+| `<leader>nl` | Run last test |
 
 ### Debugging
 
@@ -233,11 +232,14 @@ Leader key is `<Space>`.
 | `<leader>hs` | Stage hunk |
 | `<leader>hr` | Reset hunk |
 | `<leader>hS` | Stage buffer |
+| `<leader>hu` | Undo stage hunk |
 | `<leader>hR` | Reset buffer |
 | `<leader>hp` | Preview hunk |
 | `<leader>hb` | Blame line |
 | `<leader>hd` | Diff against index |
 | `<leader>hD` | Diff against last commit |
+| `<leader>tb` | Toggle git blame line |
+| `<leader>tD` | Toggle show deleted |
 | `<leader>lg` | Open LazyGit |
 | `]c` / `[c` | Next/previous git change |
 
@@ -247,6 +249,10 @@ Leader key is `<Space>`.
 |---|---|
 | `<leader>q` | Toggle diagnostics |
 | `<leader>Q` | Buffer diagnostics |
+| `<leader>xS` | Symbols |
+| `<leader>xL` | Location list |
+| `<leader>xQ` | Quickfix list |
+| `<leader>xt` | TODOs |
 
 ### Database
 
@@ -264,6 +270,7 @@ Leader key is `<Space>`.
 | `<M-n>` / `<M-p>` | Next/previous suggestion |
 | `<leader>ce` / `<leader>cd` | Enable/disable Copilot |
 | `<leader>cs` | Copilot status |
+| `<leader>cp` | Copilot panel |
 
 ## Requirements
 
@@ -272,12 +279,13 @@ Leader key is `<Space>`.
 - `make` (for telescope-fzf-native)
 - `ripgrep` (for telescope live grep)
 - `fd` (for telescope file finding)
+- `tree-sitter` CLI (installed by the role on all platforms)
 
 ## Role Variables
 
 | Variable | Default | Description |
 |---|---|---|
-| `install` | `true` | Set to `false` to uninstall Neovim and remove `~/.config/nvim` |
+| `install` | `true` | Set to `false` to uninstall Neovim and remove `~/.config/nvim` and `~/.local/share/nvim` |
 
 ## Fonts
 
@@ -292,6 +300,7 @@ The SteamOS root filesystem is read-only and wiped on OS updates, so pacman inst
 | `nvim` | GitHub release tarball (`nvim-linux-x86_64.tar.gz`) |
 | `rg` (ripgrep) | Latest musl release via GitHub API |
 | `fd` | Latest musl release via GitHub API |
+| `tree-sitter` | Latest release binary from GitHub |
 
 Delete a binary to force an upgrade on the next run (the `creates:` guard makes the download idempotent).
 

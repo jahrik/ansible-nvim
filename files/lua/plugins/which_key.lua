@@ -1,5 +1,6 @@
 return {
 	"folke/which-key.nvim",
+	version = "*",
 	event = "VimEnter",
 	opts = {
 		delay = 0,
@@ -37,9 +38,15 @@ return {
 			},
 		},
 		spec = {
+			{ "<leader>c", group = "[C]opilot" },
+			{ "<leader>d", group = "[D]ebug" },
+			{ "<leader>D", group = "[D]atabase" },
+			{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+			{ "<leader>n", group = "[N]eotest" },
+			{ "<leader>p", group = "[P]ython" },
 			{ "<leader>s", group = "[S]earch" },
 			{ "<leader>t", group = "[T]oggle" },
-			{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+			{ "<leader>x", group = "Diagnostics" },
 		},
 	},
 }

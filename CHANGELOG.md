@@ -2,7 +2,43 @@
 
 All notable changes to this role will be documented in this file.
 
-## [Unreleased]
+## 2026-06-14
+
+### Added
+
+- `mini.starter` start screen with ASCII header, Telescope actions, recent files, and plugin stats footer
+- Debian: Migrated PPA repo to `deb822_repository` module (replaces deprecated `apt_repository`)
+
+### Fixed
+
+- README: Added missing Trouble keybindings (`<leader>xS`, `<leader>xL`, `<leader>xQ`, `<leader>xt`)
+- README: Added missing Copilot panel keybinding (`<leader>cp`)
+- README: Added missing Git keybindings (`<leader>hu`, `<leader>tb`, `<leader>tD`)
+- Debian: Replaced deprecated `ansible_distribution_release` with `ansible_facts['distribution_release']`
+
+### Changed
+
+- **LSP config API**: Migrated to native `vim.lsp.config()` with `automatic_enable`
+- **Icons**: Replaced `nvim-web-devicons` with `mini.icons`
+- **Auto-pairs**: Replaced `nvim-autopairs` with `mini.pairs`
+- **Treesitter**: Removed plugin spec; Neovim 0.10+ bundles treesitter, `tree-sitter` CLI installed as system dep
+- **Neotest keybinds**: Moved from `<leader>t` prefix to `<leader>n` prefix
+- **Plugin versions**: Added `version = "*"` pins to conform, copilot, dap, gitsigns, lsp, mini, telescope, trouble, which-key
+- **Uninstall**: Now also removes `~/.local/share/nvim`
+
+### Added
+
+- `tree-sitter` CLI as a system dependency (pacman/brew on Arch/macOS, binary download on Debian/Steam Deck)
+- `marksman` LSP server (Markdown)
+- which-key group specs for Copilot, Debug, Database, Neotest, Python, Diagnostics
+
+### Removed
+
+- `nvim-autopairs` (replaced by `mini.pairs`)
+- `nvim-web-devicons` (replaced by `mini.icons`)
+- `nvim-treesitter` plugin spec (using built-in treesitter)
+
+## 2026-06-13
 
 ### Changed
 

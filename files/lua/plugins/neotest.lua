@@ -2,7 +2,6 @@ return {
 	"nvim-neotest/neotest",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"nvim-treesitter/nvim-treesitter",
 		"nvim-neotest/neotest-python",
 	},
 	config = function()
@@ -18,32 +17,32 @@ return {
 	end,
 	keys = {
 		{
-			"<leader>tt",
+			"<leader>nt",
 			function()
 				require("neotest").run.run()
 			end,
-			desc = "[T]est [T]his",
+			desc = "[N]eotest [T]his",
 		},
 		{
-			"<leader>tf",
+			"<leader>nf",
 			function()
 				require("neotest").run.run(vim.fn.expand("%"))
 			end,
-			desc = "[T]est [F]ile",
+			desc = "[N]eotest [F]ile",
 		},
 		{
-			"<leader>ts",
+			"<leader>ns",
 			function()
 				require("neotest").summary.toggle()
 			end,
-			desc = "[T]est [S]ummary",
+			desc = "[N]eotest [S]ummary",
 		},
 		{
-			"<leader>tl",
+			"<leader>nl",
 			function()
 				require("neotest").run.run_last()
 			end,
-			desc = "[T]est [L]ast",
+			desc = "[N]eotest [L]ast",
 		},
 	},
 }

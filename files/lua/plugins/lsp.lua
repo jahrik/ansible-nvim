@@ -1,5 +1,6 @@
 return {
 	"neovim/nvim-lspconfig",
+	version = "*",
 
 	dependencies = {
 		{ "mason-org/mason.nvim", opts = {} },
@@ -19,7 +20,6 @@ return {
 			local buf = event.buf
 			local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-			-- Disable LSP formatting (Conform handles it)
 			if client and client:supports_method("textDocument/formatting", buf) then
 				client.server_capabilities.documentFormattingProvider = false
 			end
@@ -96,55 +96,47 @@ return {
 
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-		local servers = {
-			lua_ls = {
-				settings = {
-					Lua = {
-						completion = { callSnippet = "Replace" },
+		vim.lsp.config("*", {
+			capabilities = capabilities,
+		})
+
+		vim.lsp.config("lua_ls", {
+			settings = {
+				Lua = {
+					completion = { callSnippet = "Replace" },
+				},
+			},
+		})
+
+		vim.lsp.config("basedpyright", {
+			settings = {
+				basedpyright = {
+					analysis = {
+						typeCheckingMode = "standard",
+						autoSearchPaths = true,
+						useLibraryCodeForTypes = true,
 					},
 				},
 			},
+		})
 
-			basedpyright = {
-				settings = {
-					basedpyright = {
-						analysis = {
-							typeCheckingMode = "standard",
-							autoSearchPaths = true,
-							useLibraryCodeForTypes = true,
-						},
-					},
+		vim.lsp.config("yamlls", {
+			settings = {
+				yaml = {
+					schemaStore = { enable = false, url = "" },
+					schemas = require("schemastore").yaml.schemas(),
+					validate = true,
 				},
 			},
+		})
 
-			ruff = {},
-			taplo = {},
-
-			yamlls = {
-				settings = {
-					yaml = {
-						schemaStore = { enable = false, url = "" },
-						schemas = require("schemastore").yaml.schemas(),
-						validate = true,
-					},
-				},
-			},
-		}
-
-		local ensure = vim.tbl_keys(servers)
-		vim.list_extend(ensure, { "stylua" })
+		local servers = { "basedpyright", "lua_ls", "marksman", "ruff", "taplo", "yamlls" }
+		local ensure = vim.list_extend(vim.deepcopy(servers), { "stylua" })
 
 		require("mason-tool-installer").setup({ ensure_installed = ensure })
 
 		require("mason-lspconfig").setup({
-			automatic_installation = false,
-			handlers = {
-				function(server_name)
-					local opts = servers[server_name] or {}
-					opts.capabilities = vim.tbl_deep_extend("force", {}, capabilities, opts.capabilities or {})
-					require("lspconfig")[server_name].setup(opts)
-				end,
-			},
+			automatic_enable = true,
 		})
 	end,
 }

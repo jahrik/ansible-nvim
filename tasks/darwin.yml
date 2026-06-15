@@ -6,6 +6,7 @@
       - fd
       - fontconfig
       - ripgrep
+      - tree-sitter-cli
       - unzip
     state: present
 
