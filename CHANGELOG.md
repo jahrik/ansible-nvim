@@ -6,6 +6,9 @@ All notable changes to this role will be documented in this file.
 
 ### Added
 
+- Steam Deck: Install DejaVuSansMono Nerd Font to `~/.local/share/fonts` (matches Arch/Debian font install pattern)
+- Steam Deck molecule: Assert Nerd Font file exists in verify playbook
+
 - iron.nvim: Interactive REPL manager (send code to ipython/python, cell-based workflow with `# %%` markers)
 - csvview.nvim: Tabular CSV/TSV viewing with sticky headers and auto-delimiter detection
 - overseer.nvim: Task runner for dbt, pytest, and shell commands with output capture
