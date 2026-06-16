@@ -52,3 +52,13 @@
       ansible.builtin.assert:
         that: lsp_lua.stat.exists
         fail_msg: "~/.config/nvim/lua/plugins/lsp.lua not found"
+
+    - name: Stat Nerd Font file
+      ansible.builtin.stat:
+        path: ~/.local/share/fonts/DejaVuSansMNerdFontMono-Regular.ttf
+      register: nerd_font
+
+    - name: Assert Nerd Font is installed
+      ansible.builtin.assert:
+        that: nerd_font.stat.exists
+        fail_msg: "~/.local/share/fonts/DejaVuSansMNerdFontMono-Regular.ttf not found"
