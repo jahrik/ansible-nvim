@@ -1,12 +1,7 @@
 ---
-- name: Check for Steam Deck
-  ansible.builtin.stat:
-    path: /etc/steamos-release
-  register: steamos_release
-
 - name: Set is_steamdeck fact
   ansible.builtin.set_fact:
-    is_steamdeck: "{{ steamos_release.stat.exists }}"
+    is_steamdeck: "{{ ansible_distribution == 'SteamOS' }}"
 
 - name: Uninstall neovim (macOS)
   become: false
