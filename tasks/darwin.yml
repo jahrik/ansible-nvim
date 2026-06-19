@@ -15,9 +15,3 @@
   community.general.homebrew:
     name: neovim
     state: present
-
-- name: Install Nerd Font (macOS)
-  become: false
-  community.general.homebrew_cask:
-    name: font-dejavu-sans-mono-nerd-font
-    state: present

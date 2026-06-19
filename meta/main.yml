@@ -29,4 +29,5 @@ galaxy_info:
     - lazy
     - lsp
     - python
-dependencies: []
+dependencies:
+  - role: jahrik.nerd_fonts
