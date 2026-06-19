@@ -13,10 +13,9 @@ Installs [Neovim](https://neovim.io/) and deploys a full Lua-based configuration
 `tasks/main.yml` -> `install.yml` or `uninstall.yml` based on `install | bool`
 
 **install.yml:**
-1. Stat `/etc/steamos-release` -> set `is_steamdeck` fact
-2. Include OS-specific tasks: `steamdeck.yml`, `archlinux.yml`, `debian.yml`, or `darwin.yml`
-3. Create `~/.local/share/fonts`, download DejaVu Nerd Fonts, notify `Fc-cache` handler
-4. Recursive copy of `files/` to `~/.config/nvim/` (new plugins deploy without task edits)
+1. Include OS-specific tasks: `steamdeck.yml` on SteamOS, or `archlinux.yml`, `debian.yml`, or `darwin.yml` based on OS family.
+2. Create `~/.local/share/fonts`, download DejaVu Nerd Fonts, notify `Fc-cache` handler.
+3. Recursive copy of `files/` to `~/.config/nvim/` (new plugins deploy without task edits).
 
 **archlinux.yml:** pacman installs fd, fontconfig, ripgrep, unzip, tree-sitter
 
