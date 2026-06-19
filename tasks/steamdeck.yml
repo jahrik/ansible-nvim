@@ -103,4 +103,3 @@
       - "*/fd"
     creates: ~/.local/bin/fd
   when: not fd_stat.stat.exists
-

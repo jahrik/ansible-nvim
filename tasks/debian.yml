@@ -75,4 +75,3 @@
   ansible.builtin.shell: gunzip -c /tmp/tree-sitter.gz > /usr/local/bin/tree-sitter && chmod 755 /usr/local/bin/tree-sitter
   args:
     creates: /usr/local/bin/tree-sitter
-
