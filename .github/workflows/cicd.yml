@@ -89,19 +89,19 @@ jobs:
       - name: Install dependencies
         run: pip3 install ansible
 
-      - name: Install Galaxy requirements
-        run: ansible-galaxy role install -r jahrik.nvim/requirements.yml
+      - name: Install requirements
+        run: ansible-galaxy install -r jahrik.nvim/molecule/localhost/requirements.yml -p ${{ github.workspace }}
 
       - name: Run converge
         working-directory: jahrik.nvim
         env:
-          ANSIBLE_ROLES_PATH: ~/.ansible/roles
+          ANSIBLE_ROLES_PATH: ${{ github.workspace }}
         run: ansible-playbook molecule/localhost/converge.yml -i "localhost," -c local
 
       - name: Run verify
         working-directory: jahrik.nvim
         env:
-          ANSIBLE_ROLES_PATH: ~/.ansible/roles
+          ANSIBLE_ROLES_PATH: ${{ github.workspace }}
         run: ansible-playbook molecule/localhost/verify.yml -i "localhost," -c local
 
   release:
