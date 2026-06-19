@@ -1,10 +1,12 @@
 ---
-- name: Set is_steamdeck fact
-  ansible.builtin.set_fact:
-    is_steamdeck: "{{ ansible_distribution == 'SteamOS' }}"
+- name: Include OS specific tasks (SteamOS)
+  ansible.builtin.include_tasks: steamdeck.yml
+  when: ansible_distribution == 'SteamOS'
 
-- name: Include OS specific tasks
-  ansible.builtin.include_tasks: "{{ 'steamdeck' if is_steamdeck else ansible_facts['os_family'] | lower }}.yml"
+- name: Include OS specific tasks (other OS)
+  ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"
+  when: ansible_distribution != 'SteamOS'
+
 
 - name: Deploy nvim configuration
   become: false
