@@ -1,13 +1,4 @@
 ---
-- name: Check for Steam Deck
-  ansible.builtin.stat:
-    path: /etc/steamos-release
-  register: steamos_release
-
-- name: Set is_steamdeck fact
-  ansible.builtin.set_fact:
-    is_steamdeck: "{{ steamos_release.stat.exists }}"
-
 - name: Uninstall neovim (macOS)
   become: false
   community.general.homebrew:
@@ -24,14 +15,16 @@
     - ~/.local/bin/nvim
     - ~/.local/lib/nvim
     - ~/.local/share/nvim
-  when: is_steamdeck
+  when: ansible_distribution == 'SteamOS'
 
 - name: Uninstall neovim
   become: true
   ansible.builtin.package:
     name: neovim
     state: absent
-  when: ansible_facts['os_family'] != 'Darwin' and not is_steamdeck
+  when:
+    - ansible_facts['os_family'] != 'Darwin'
+    - ansible_distribution != 'SteamOS'
 
 - name: Destroy ~/.config/nvim directory
   become: false

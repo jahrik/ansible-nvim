@@ -1,15 +1,12 @@
 ---
-- name: Check for Steam Deck
-  ansible.builtin.stat:
-    path: /etc/steamos-release
-  register: steamos_release
+- name: Include OS specific tasks (SteamOS)
+  ansible.builtin.include_tasks: steamdeck.yml
+  when: ansible_distribution == 'SteamOS'
 
-- name: Set is_steamdeck fact
-  ansible.builtin.set_fact:
-    is_steamdeck: "{{ steamos_release.stat.exists }}"
+- name: Include OS specific tasks (other OS)
+  ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"
+  when: ansible_distribution != 'SteamOS'
 
-- name: Include OS specific tasks
-  ansible.builtin.include_tasks: "{{ 'steamdeck' if is_steamdeck else ansible_facts['os_family'] | lower }}.yml"
 
 - name: Deploy nvim configuration
   become: false
