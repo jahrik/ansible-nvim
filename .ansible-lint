@@ -4,3 +4,4 @@ exclude_paths:
   - .cache/
   - molecule/
   - .ansible/
+  - tests/
