@@ -1,6 +1,7 @@
 ---
-profile: basic
+profile: production
 exclude_paths:
   - .cache/
   - molecule/
   - .ansible/
+  - tests/
