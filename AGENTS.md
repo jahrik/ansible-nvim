@@ -73,6 +73,8 @@ Each plugin is a self-contained spec returned from its file. lazy.nvim auto-impo
 ## Testing
 
 ```bash
+uv sync
+source .venv/bin/activate
 yamllint .
 ansible-lint
 molecule test
