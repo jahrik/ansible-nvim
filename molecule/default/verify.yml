@@ -93,7 +93,8 @@
 
   - name: Assert fd version output
     ansible.builtin.assert:
-      that: "'fd ' in fd_version.stdout"
+      that:
+        - "'fd ' in fd_version.stdout or 'fdfind ' in fd_version.stdout"
 
   - name: Run rg --version
     ansible.builtin.command: rg --version
