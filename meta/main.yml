@@ -4,7 +4,7 @@ galaxy_info:
   namespace: jahrik
   description: Install Neovim with a full Lua config managed by lazy.nvim
   issue_tracker_url: https://github.com/jahrik/ansible-nvim/issues
-  license: GPLv2
+  license: MIT
   min_ansible_version: '2.16'
   platforms:
     - name: ArchLinux
