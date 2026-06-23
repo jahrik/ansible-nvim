@@ -8,93 +8,71 @@ on:
   workflow_dispatch:
 
 jobs:
-
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the codebase
-        uses: actions/checkout@v5
-      - name: Set up Python 3
-        uses: astral-sh/setup-uv@v8.1.0
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v8.1.0
         with:
-          python-version: '3.12'
-      - name: Install test dependencies
-        run: uv sync
-      - name: Install Galaxy requirements
-        run: uv run ansible-galaxy role install -r requirements.yml
-      - name: Lint code
-        run: uv run yamllint .
-      - name: Ansible lint
-        run: uv run ansible-lint
+          python-version: "3.12"
+      - run: uv sync
+      - run: uv run ansible-galaxy role install -r requirements.yml
+      - run: uv run yamllint .
+      - run: uv run ansible-lint
 
   molecule:
     name: Molecule
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the codebase
-        uses: actions/checkout@v5
-      - name: Set up Python 3
-        uses: astral-sh/setup-uv@v8.1.0
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v8.1.0
         with:
-          python-version: '3.12'
-      - name: Install test dependencies
-        run: uv sync
-      - name: Run Molecule
-        run: uv run molecule test
+          python-version: "3.12"
+      - run: uv sync
+      - run: uv run molecule test
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+          PY_COLORS: "1"
+          ANSIBLE_FORCE_COLOR: "1"
 
   steamdeck:
     name: Molecule (steamdeck)
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the codebase
-        uses: actions/checkout@v5
-      - name: Set up Python 3
-        uses: astral-sh/setup-uv@v8.1.0
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v8.1.0
         with:
-          python-version: '3.12'
-      - name: Install test dependencies
-        run: uv sync
-      - name: Run Molecule
-        run: uv run molecule test -s steamdeck
+          python-version: "3.12"
+      - run: uv sync
+      - run: uv run molecule test -s steamdeck
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+          PY_COLORS: "1"
+          ANSIBLE_FORCE_COLOR: "1"
 
   macos:
     name: macOS
     runs-on: macos-latest
     steps:
-      - name: Check out the codebase
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           path: jahrik.nvim
-      - name: Set up Python 3
-        uses: astral-sh/setup-uv@v8.1.0
+      - uses: astral-sh/setup-uv@v8.1.0
         with:
-          python-version: '3.12'
-      - name: Install test dependencies
+          python-version: "3.12"
+      - run: uv sync
         working-directory: jahrik.nvim
-        run: uv sync
-      - name: Install Galaxy role requirements
+      - run: uv run ansible-galaxy role install -r molecule/localhost/requirements.yml -p ${{ github.workspace }}
         working-directory: jahrik.nvim
-        run: uv run ansible-galaxy role install -r molecule/localhost/requirements.yml -p ${{ github.workspace }}
-      - name: Install Galaxy collection requirements
+      - run: uv run ansible-galaxy collection install -r molecule/localhost/requirements.yml
         working-directory: jahrik.nvim
-        run: uv run ansible-galaxy collection install -r molecule/localhost/requirements.yml
-      - name: Run converge
+      - run: uv run ansible-playbook molecule/localhost/converge.yml -i "localhost," -c local
         working-directory: jahrik.nvim
         env:
           ANSIBLE_ROLES_PATH: ${{ github.workspace }}
-        run: uv run ansible-playbook molecule/localhost/converge.yml -i "localhost," -c local
-      - name: Run verify
+      - run: uv run ansible-playbook molecule/localhost/verify.yml -i "localhost," -c local
         working-directory: jahrik.nvim
         env:
           ANSIBLE_ROLES_PATH: ${{ github.workspace }}
-        run: uv run ansible-playbook molecule/localhost/verify.yml -i "localhost," -c local
 
   release:
     name: Release
@@ -102,10 +80,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: checkout
-        uses: actions/checkout@v5
-      - name: galaxy
-        uses: robertdebock/galaxy-action@1.2.1
+      - uses: actions/checkout@v5
+      - uses: robertdebock/galaxy-action@1.2.1
         with:
           galaxy_api_key: ${{ secrets.GALAXY_API_KEY }}
           git_branch: main

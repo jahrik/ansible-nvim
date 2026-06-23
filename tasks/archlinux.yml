@@ -1,8 +1,13 @@
 ---
-- name: Install requirements
+- name: Update pacman cache
   become: true
   community.general.pacman:
     update_cache: true
+  changed_when: false
+
+- name: Install requirements
+  become: true
+  community.general.pacman:
     name:
       - fd
       - fontconfig

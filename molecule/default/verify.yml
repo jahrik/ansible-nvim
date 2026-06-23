@@ -4,13 +4,51 @@
   gather_facts: false
   tasks:
 
-  - name: Gather package facts
-    ansible.builtin.package_facts:
-      manager: auto
+  - name: Check nvim binary
+    ansible.builtin.command: which nvim
+    register: nvim_bin
+    changed_when: false
+    failed_when: false
 
-  - name: Assert neovim package installed
+  - name: Assert nvim is installed
     ansible.builtin.assert:
-      that: "'neovim' in ansible_facts.packages"
+      that: nvim_bin.rc == 0
+
+  - name: Check fd binary
+    ansible.builtin.command: which fdfind
+    register: fdfind_bin
+    changed_when: false
+    failed_when: false
+
+  - name: Check fd (alternative) binary
+    ansible.builtin.command: which fd
+    register: fd_bin
+    changed_when: false
+    failed_when: false
+
+  - name: Assert fd is installed
+    ansible.builtin.assert:
+      that: fdfind_bin.rc == 0 or fd_bin.rc == 0
+
+  - name: Check rg binary
+    ansible.builtin.command: which rg
+    register: rg_bin
+    changed_when: false
+    failed_when: false
+
+  - name: Assert rg is installed
+    ansible.builtin.assert:
+      that: rg_bin.rc == 0
+
+  - name: Check tree-sitter binary
+    ansible.builtin.command: which tree-sitter
+    register: treesitter_bin
+    changed_when: false
+    failed_when: false
+
+  - name: Assert tree-sitter is installed
+    ansible.builtin.assert:
+      that: treesitter_bin.rc == 0
 
   - name: Stat ~/.config/nvim/init.lua file
     ansible.builtin.stat:
@@ -18,7 +56,6 @@
     register: init_lua
 
   - name: Assert ~/.config/nvim/init.lua exists
-    become: false
     ansible.builtin.assert:
       that: init_lua.stat.exists
 
@@ -40,8 +77,7 @@
     ansible.builtin.assert:
       that: lsp_lua.stat.exists
 
-  - name: Verify nvim binary runs
-    become: false
+  - name: Run nvim --version
     ansible.builtin.command: nvim --version
     register: nvim_version
     changed_when: false
@@ -49,6 +85,33 @@
   - name: Assert nvim version output
     ansible.builtin.assert:
       that: "'NVIM' in nvim_version.stdout"
+
+  - name: Run fd --version
+    ansible.builtin.shell: fd --version || fdfind --version
+    register: fd_version
+    changed_when: false
+
+  - name: Assert fd version output
+    ansible.builtin.assert:
+      that: "'fd ' in fd_version.stdout"
+
+  - name: Run rg --version
+    ansible.builtin.command: rg --version
+    register: rg_version
+    changed_when: false
+
+  - name: Assert rg version output
+    ansible.builtin.assert:
+      that: "'ripgrep ' in rg_version.stdout"
+
+  - name: Run tree-sitter --version
+    ansible.builtin.command: tree-sitter --version
+    register: treesitter_version
+    changed_when: false
+
+  - name: Assert tree-sitter version output
+    ansible.builtin.assert:
+      that: "'tree-sitter ' in treesitter_version.stdout"
 
   - name: Verify core lua files parse without syntax errors
     become: false

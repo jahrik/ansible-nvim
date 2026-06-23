@@ -78,9 +78,20 @@ source .venv/bin/activate
 yamllint .
 ansible-lint
 molecule test
-molecule test -s steamdeck
+```
+
+Step by step:
+
+```bash
 molecule converge
+molecule verify
 molecule destroy
+```
+
+Steam Deck scenario:
+
+```bash
+molecule test -s steamdeck
 ```
 
 Localhost scenario (used in CI on the macOS GitHub Actions runner):

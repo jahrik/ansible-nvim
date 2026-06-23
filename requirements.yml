@@ -1,3 +1,5 @@
 ---
 roles:
   - name: jahrik.nerd_fonts
+collections:
+  - name: community.general
