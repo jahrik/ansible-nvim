@@ -78,8 +78,21 @@ source .venv/bin/activate
 yamllint .
 ansible-lint
 molecule test
+```
+
+### Examples
+
+Run a specific scenario (e.g., Steam Deck):
+
+```bash
 molecule test -s steamdeck
+```
+
+Step-by-step debugging:
+
+```bash
 molecule converge
+molecule verify
 molecule destroy
 ```
 

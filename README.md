@@ -241,7 +241,9 @@ ansible-lint
 molecule test
 ```
 
-Step by step:
+### Examples
+
+Step-by-step debugging:
 
 ```bash
 molecule converge
@@ -249,7 +251,7 @@ molecule verify
 molecule destroy
 ```
 
-Steam Deck scenario:
+Run a specific scenario (e.g., Steam Deck):
 
 ```bash
 molecule test -s steamdeck
