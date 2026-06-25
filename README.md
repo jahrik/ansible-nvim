@@ -102,7 +102,6 @@ Plugin management uses [lazy.nvim](https://github.com/folke/lazy.nvim), which bo
 
 Configured LSP servers (auto-installed via Mason):
 
-- `basedpyright` - Python type checking
 - `ruff` - Python linting/formatting
 - `lua_ls` - Lua
 - `marksman` - Markdown

@@ -106,8 +106,8 @@ Fast iteration on a Python module.
 
 1. Open your Python file
 2. LSP gives you:
-   - Type errors from basedpyright (inline diagnostics)
-   - Import sorting and lint fixes from ruff
+   - Diagnostics and lint fixes from ruff
+   - Import sorting from ruff
    - Completion with type info via `<C-Space>`
 3. Write code. Format-on-save handles style automatically.
 4. Run the nearest test: `<leader>nt`
