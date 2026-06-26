@@ -1,7 +1,6 @@
 return {
 	"zbirenbaum/copilot.lua",
 	branch = "master",
-	version = "*",
 	cmd = "Copilot",
 	event = "InsertEnter",
 
