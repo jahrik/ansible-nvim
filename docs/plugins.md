@@ -19,7 +19,6 @@ Snippets expand on confirm. Tab through snippet placeholders with `<Tab>`.
 Language servers start automatically when you open a supported file. Mason installs them on first use.
 
 **Configured servers:**
-- `basedpyright` - Python type checking (standard mode)
 - `ruff` - Python linting and import sorting
 - `lua_ls` - Lua (Neovim API aware via lazydev)
 - `yamlls` - YAML with SchemaStore for known schemas (docker-compose, GitHub Actions, etc.)

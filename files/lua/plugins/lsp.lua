@@ -108,18 +108,6 @@ return {
 			},
 		})
 
-		vim.lsp.config("basedpyright", {
-			settings = {
-				basedpyright = {
-					analysis = {
-						typeCheckingMode = "standard",
-						autoSearchPaths = true,
-						useLibraryCodeForTypes = true,
-					},
-				},
-			},
-		})
-
 		vim.lsp.config("yamlls", {
 			settings = {
 				yaml = {
@@ -130,7 +118,7 @@ return {
 			},
 		})
 
-		local servers = { "basedpyright", "lua_ls", "marksman", "ruff", "taplo", "yamlls" }
+		local servers = { "lua_ls", "marksman", "ruff", "taplo", "yamlls" }
 		local ensure = vim.list_extend(vim.deepcopy(servers), { "stylua" })
 
 		require("mason-tool-installer").setup({ ensure_installed = ensure })
