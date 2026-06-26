@@ -26,6 +26,9 @@ require("lazy").setup({
 			lazy = "💤 ",
 		},
 	},
+	git = {
+		timeout = 600,
+	},
 	install = {
 		missing = true,
 		colorscheme = { "catppuccin" },
