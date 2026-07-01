@@ -77,3 +77,35 @@
   - name: Assert lazy.nvim installed plugins
     ansible.builtin.assert:
       that: "lazy_sync.stdout | int > 30"
+
+- name: Verify uninstall
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Run jahrik.nvim with install false
+      ansible.builtin.include_role:
+        name: jahrik.nvim
+      vars:
+        install: false
+
+    - name: Run nvim --version after uninstall
+      become: false
+      ansible.builtin.command: nvim --version
+      register: nvim_version_removed
+      changed_when: false
+      failed_when: false
+
+    - name: Assert nvim binary is removed
+      ansible.builtin.assert:
+        that: nvim_version_removed.rc != 0
+        fail_msg: "nvim --version still succeeded after uninstall"
+
+    - name: Stat ~/.config/nvim directory
+      ansible.builtin.stat:
+        path: ~/.config/nvim
+      register: nvim_config_removed
+
+    - name: Assert ~/.config/nvim is removed
+      ansible.builtin.assert:
+        that: not nvim_config_removed.stat.exists
+        fail_msg: "~/.config/nvim still present after uninstall"
