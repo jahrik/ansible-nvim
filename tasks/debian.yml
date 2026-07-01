@@ -47,13 +47,11 @@
     suites: "{{ ansible_facts['distribution_release'] }}"
     components: main
     signed_by: /usr/share/keyrings/neovim-ppa.gpg
-    state: present
 
 - name: Install neovim
   become: true
   ansible.builtin.apt:
     name: neovim
-    state: present
     update_cache: true
 
 - name: Check if tree-sitter binary exists

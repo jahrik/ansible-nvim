@@ -5,8 +5,16 @@
 
 - name: Include OS specific tasks (other OS)
   ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"
-  when: ansible_facts['distribution_release'] != 'holo'
+  when:
+    - ansible_facts['distribution_release'] != 'holo'
+    - ansible_facts['os_family'] in ['Archlinux', 'Darwin', 'Debian']
 
+- name: Fail on unsupported OS family
+  ansible.builtin.fail:
+    msg: "Unsupported os_family '{{ ansible_facts['os_family'] }}' for jahrik.nvim"
+  when:
+    - ansible_facts['distribution_release'] != 'holo'
+    - ansible_facts['os_family'] not in ['Archlinux', 'Darwin', 'Debian']
 
 - name: Deploy nvim configuration
   become: false

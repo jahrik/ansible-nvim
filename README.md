@@ -117,7 +117,22 @@ Configured LSP servers (auto-installed via Mason):
 
 Formatters by filetype: `stylua` (Lua), `isort` + `ruff` (Python), `sqlfluff` (SQL), `prettier` (Markdown).
 
-### Testing
+### Tags
+
+Run or skip parts of the role with tags:
+
+```bash
+ansible-playbook playbook.yml --tags nvim:install
+ansible-playbook playbook.yml --skip-tags nvim:uninstall
+```
+
+| Tag | Scope |
+|---|---|
+| `nvim` | All role tasks |
+| `nvim:install` | Install path only |
+| `nvim:uninstall` | Uninstall path only |
+
+## Testing
 
 | Plugin | Purpose |
 |---|---|
