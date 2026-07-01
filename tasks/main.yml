@@ -1,13 +1,23 @@
 ---
 - name: Install
-  ansible.builtin.include_tasks: install.yml
+  ansible.builtin.include_tasks:
+    file: install.yml
+    apply:
+      tags:
+        - nvim
+        - nvim:install
   when: install | default(true) | bool
   tags:
     - nvim
     - nvim:install
 
 - name: Uninstall
-  ansible.builtin.include_tasks: uninstall.yml
+  ansible.builtin.include_tasks:
+    file: uninstall.yml
+    apply:
+      tags:
+        - nvim
+        - nvim:uninstall
   when: not (install | default(true) | bool)
   tags:
     - nvim
