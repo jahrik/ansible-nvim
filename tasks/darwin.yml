@@ -8,10 +8,8 @@
       - ripgrep
       - tree-sitter-cli
       - unzip
-    state: present
 
 - name: Install neovim (macOS)
   become: false
   community.general.homebrew:
     name: neovim
-    state: present
