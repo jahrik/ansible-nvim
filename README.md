@@ -280,7 +280,7 @@ molecule verify -s localhost
 
 ## License
 
-GPLv2
+MIT
 
 ## Author Information
 
