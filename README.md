@@ -115,7 +115,7 @@ Configured LSP servers (auto-installed via Mason):
 | [conform.nvim](https://github.com/stevearc/conform.nvim) | Async formatter (format-on-save) |
 | [nvim-lint](https://github.com/mfussenegger/nvim-lint) | Async linter |
 
-Formatters by filetype: `stylua` (Lua), `isort` + `ruff` (Python), `sqlfluff` (SQL), `prettier` (Markdown).
+Formatters by filetype: `stylua` (Lua), `ruff` (Python, imports + code), `sqlfluff` (SQL), `prettier` (Markdown).
 
 ### Tags
 
