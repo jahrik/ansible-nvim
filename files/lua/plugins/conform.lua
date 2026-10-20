@@ -28,24 +28,12 @@ return {
 
 		formatters_by_ft = {
 			lua = { "stylua" },
-			python = { "isort", "ruff_format" },
+			python = { "ruff_organize_imports", "ruff_format" },
 			sql = { "sqlfluff" },
 			markdown = { "prettier" },
 		},
 
 		formatters = {
-			ruff_format = {
-				command = "ruff",
-				args = {
-					"format",
-					"--line-length",
-					"120",
-					"--stdin-filename",
-					"$FILENAME",
-					"-",
-				},
-				stdin = true,
-			},
 			sqlfluff = {
 				command = "sqlfluff",
 				args = {

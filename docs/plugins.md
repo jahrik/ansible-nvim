@@ -35,7 +35,7 @@ Format-on-save is enabled for all files. When you write a buffer, the configured
 
 | Filetype | Formatter |
 |---|---|
-| Python | isort (imports) + ruff (code) |
+| Python | ruff (imports + code) |
 | Lua | stylua |
 | SQL | sqlfluff (postgres dialect, dbt templater) |
 | Markdown | prettier |
