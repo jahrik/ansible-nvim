@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.12, <3.14"
 resolution-markers = [
     "sys_platform == 'linux2'",
@@ -41,7 +41,7 @@ wheels = [
 
 [[package]]
 name = "ansible-lint"
-version = "26.9.0"
+version = "26.10.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-compat" },
@@ -61,9 +61,9 @@ dependencies = [
     { name = "wcmatch" },
     { name = "yamllint" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/09/b5/841f5ae439a2a039c6045880042d6acd8a8e2fd4e2fb66bc706e321ecb59/ansible_lint-26.9.0.tar.gz", hash = "sha256:cb3265888f30815de0dcf0964d34768b45c98bb4361eea7eb42c0342e81b51b4", size = 826447, upload-time = "2026-09-22T17:05:32.099Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fe/55/94814bfe335b58e1f65c0b2e6c8d0676737eadd7cc1466d8fe7213345a13/ansible_lint-26.10.1.tar.gz", hash = "sha256:a746c6f3cb5719d1c202bc14e956ef3b0eca704025d1aa92707a27fc73ed73ea", size = 829069, upload-time = "2026-10-13T12:45:06.196Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/23/abf992bbe521b4c9cac629d87a5928b35b3a39084ea299df64daed216e55/ansible_lint-26.9.0-py3-none-any.whl", hash = "sha256:4d01903fca9c42f7ce2b366ea5503d0701a27b3c6fdf684276a72888eea57f50", size = 341699, upload-time = "2026-09-22T17:05:30.311Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/c7/80a6ac01d970257979f8f18e34e5a1a4c1ad356ea8507425fe74ea9178bc/ansible_lint-26.10.1-py3-none-any.whl", hash = "sha256:cc26d405ee38c3390e80ec18c4137b5685c36d03ce7d4d8233b0470d9a0e21e9", size = 342245, upload-time = "2026-10-13T12:45:04.243Z" },
 ]
 
 [[package]]
@@ -81,9 +81,9 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "ansible-core", specifier = ">=2.21.4,<2.22" },
-    { name = "ansible-lint", specifier = ">=26.9.0" },
-    { name = "molecule", specifier = ">=26.9.0" },
-    { name = "molecule-plugins", extras = ["docker"], specifier = ">=26.7.15" },
+    { name = "ansible-lint", specifier = ">=26.10.1" },
+    { name = "molecule", specifier = ">=26.10.0" },
+    { name = "molecule-plugins", extras = ["docker"], specifier = ">=26.10.12" },
     { name = "yamllint", specifier = ">=1.38.0" },
 ]
 
@@ -454,7 +454,7 @@ wheels = [
 
 [[package]]
 name = "molecule"
-version = "26.9.0"
+version = "26.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-compat" },
@@ -469,21 +469,21 @@ dependencies = [
     { name = "rich" },
     { name = "wcmatch" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/87/eb/ef1f1a0eba6e2fac4e59001c539109bc65c4dcd1b8a9d2b93c9097241d71/molecule-26.9.0.tar.gz", hash = "sha256:1c44254eb173d0a3a48217b874d19bfa436614fb0c6faa75d9b192a843360188", size = 4757309, upload-time = "2026-09-22T17:07:07.35Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ea/86/6f3b9af840bea4296746db9ebfe6809f7848bb68e0dac7ac639879b72d6a/molecule-26.10.0.tar.gz", hash = "sha256:32533aaba78c29eed80bcaab5d03ff63fe48b8f43071cf77953f391e0732d439", size = 4753214, upload-time = "2026-10-12T09:11:19.381Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4e/b7/4041d1b53467e12a4fd72ae7e0bb8ccc2909e126e2bb0cf2babcae82cc41/molecule-26.9.0-py3-none-any.whl", hash = "sha256:ad8f468c01f35a27cd12858e24c86ad27344dc1076845f03d78fdb563fb69f82", size = 163709, upload-time = "2026-09-22T17:07:05.163Z" },
+    { url = "https://files.pythonhosted.org/packages/6e/da/7bef0163484b9dc1bdce6883eb4898aebaf8e559cbea0df7db065e308e9f/molecule-26.10.0-py3-none-any.whl", hash = "sha256:deb351b11f1b329ae3b3c856d5b1c1d9a9d8f8d40ba717c77e54b1778b4557d2", size = 163735, upload-time = "2026-10-12T09:11:17.85Z" },
 ]
 
 [[package]]
 name = "molecule-plugins"
-version = "26.7.15"
+version = "26.10.12"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "molecule" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8a/ca/2967c71978f725772b701b23bd47f9694a9428587a26aa8911ceed2d8549/molecule_plugins-26.7.15.tar.gz", hash = "sha256:df4cab8d9e13ed448fc33d72af1fbae54883e9255a42c021ae7e875dfd3374c1", size = 216679, upload-time = "2026-07-15T16:31:18.145Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9d/a9/0e69e39a9e65a673b0d5f4fc1ea810a2f6fab671162b21b157a0cf124f71/molecule_plugins-26.10.12.tar.gz", hash = "sha256:03f79df9f7d6d6107ad9507f6c58724bbd18c21afb6f020fc532361b343ea333", size = 276741, upload-time = "2026-10-12T21:47:46.334Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b2/03/678571fb5d41e3769c578f131aff4bd5dfd8a402be2767d7374c79dc5cf6/molecule_plugins-26.7.15-py3-none-any.whl", hash = "sha256:191dfa7fd965c637e3b61d0929f2fb741f0df1181a250df62eca3657b1182794", size = 86394, upload-time = "2026-07-15T16:31:16.558Z" },
+    { url = "https://files.pythonhosted.org/packages/07/79/192c2de4e0d25472182d45ca84bbe4eb9c646396f212c616554c71aec51d/molecule_plugins-26.10.12-py3-none-any.whl", hash = "sha256:a618b60016eac397d8e279eeb5c494a9cee6d33103dbe5222891df81657759f1", size = 88940, upload-time = "2026-10-12T21:47:44.832Z" },
 ]
 
 [package.optional-dependencies]
